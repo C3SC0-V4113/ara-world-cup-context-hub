@@ -73,6 +73,20 @@ La migracion previa incluye:
 - Remplazo de usuario placeholder por autenticacion corporativa real.
 - Fuente controlada para asignar administradores.
 - Definicion final de areas/equipos internos para ranking grupal.
+- Posible capa de ingestion/cache desde APIs externas hacia Cloudflare D1 para
+  equipos, calendario, resultados, eventos, standings y estadisticas, pendiente
+  de aprobacion por ADR-0008.
+- Posible modelo de overrides admin sobre datos importados de proveedores
+  externos, pendiente de aprobacion por ADR-0008.
+- Rediseno propuesto de Predicciones para priorizar predicciones diarias y
+  reducir protagonismo de predicciones generales bloqueadas, pendiente de ADR-0009.
+- Posible refactor de scoring para aumentar foco diario, pendiente de ADR-0009.
+- Posible ranking por grupos normalizado, tabla avanzada y subvista personal con
+  log de puntos, pendiente de ADR-0010.
+- Posible flujo de recordatorios por Teams desde Home o botones "recordar",
+  pendiente de ADR-0011.
+- Decision pendiente sobre badges de selecciones favoritas: estilo unico o color
+  principal por pais.
 
 ## Relacion entre repos
 
@@ -86,3 +100,9 @@ La migracion previa incluye:
   fallback.
 - Para identidad y roles, este hub registra como decision vigente: cuentas
   corporativas Microsoft/Windows usadas en Teams y roles base `user`/`admin`.
+- Para fuentes de datos externas, este hub registra una propuesta en evaluacion
+  en ADR-0008: preferir APIs tradicionales para datos verificables,
+  cachear/importar en D1 y limitar IA a categorias ambiguas o narrativa con
+  validacion admin. No es una decision vigente.
+- Para propuestas UX/arquitectura por vista, este hub registra propuestas en
+  ADR-0009, ADR-0010 y ADR-0011. No son decisiones vigentes.

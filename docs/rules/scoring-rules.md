@@ -49,3 +49,19 @@ ambiguo para evitar endurecer supuestos incorrectos.
 Usar un modelo administrable de reglas de scoring y un flujo de recalculo
 deterministico. La IA puede asistir en categorias subjetivas, pero el resultado
 final debe quedar persistido y auditable por admin.
+
+## Propuesta no aprobada: mas foco en scoring diario
+
+Fuente: criterio tecnico del usuario. Estado: Proposed.
+
+ADR-0009 propone revisar la tabla de puntos para aumentar el peso relativo de
+partidos diarios. La motivacion es que varias mecanicas actuales dependen del fin
+del torneo, mientras que la participacion diaria sostiene la actividad recurrente
+del juego.
+
+Esta propuesta no cambia la tabla actual. Antes de aprobarla se debe definir:
+
+- que mecanicas diarias ganarian mas peso;
+- si las predicciones generales bajarian puntos o solo protagonismo visual;
+- si el cambio aplicaria retroactivamente o solo hacia adelante;
+- como explicar el balance entre aciertos diarios y predicciones de torneo.

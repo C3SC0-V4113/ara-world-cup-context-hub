@@ -28,6 +28,11 @@ operada con **Wrangler**. El despliegue primario de la app web debe ser
 La identidad objetivo usa cuentas corporativas Microsoft/Windows usadas en Teams,
 con roles base `user` y `admin`.
 
+Propuesta en evaluacion: para datos objetivos de futbol, se investiga preferir
+APIs tradicionales o datasets verificables, cachearlos en D1 y reservar IA para
+categorias ambiguas o narrativa con validacion admin. Esta propuesta aun no esta
+aprobada.
+
 ## Jerarquia de fuentes
 
 La reunion de referencia se interpreta con esta regla:
@@ -50,6 +55,8 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Reglas de bloqueo](docs/rules/prediction-locking.md)
 - [Plataforma y base de datos](docs/architecture/platform-and-database.md)
 - [Identidad y acceso](docs/architecture/identity-and-access.md)
+- [Propuesta de APIs tradicionales y fuentes de datos](docs/integrations/football-data-apis.md)
+- [Propuestas UX y arquitectura por vista](docs/proposals/view-ux-architecture-proposals.md)
 - [Mapa del repo de aplicacion](docs/app-repo-map.md)
 - [Architecture Decision Records](docs/adr/README.md)
 
@@ -59,6 +66,7 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Flujo de scoring y ranking](docs/diagrams/scoring-ranking-flow.md)
 - [Modelo conceptual de datos](docs/diagrams/conceptual-data-model.md)
 - [Navegacion Home, Ranking y Gamificacion](docs/diagrams/home-ranking-navigation.md)
+- [Propuesta de ingestion de datos externos](docs/diagrams/external-data-ingestion.md)
 
 Los diagramas estan en Mermaid para que puedan mantenerse como texto versionado.
 

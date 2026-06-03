@@ -105,13 +105,46 @@ Guia tecnica:
 - Los roles iniciales son `user` para participantes normales y `admin` para
   operacion administrativa.
 
+## Propuestas tecnicas no aprobadas
+
+- ADR-0008 propone que los datos objetivos de futbol vengan de APIs
+  tradicionales, datasets o fuentes estructuradas siempre que sea posible.
+- ADR-0008 propone que Cloudflare D1 conserve la copia importada/cacheada para
+  UI, scoring y ranking.
+- ADR-0008 propone limitar IA a asistencia para categorias ambiguas y narrativa,
+  no como fuente final para datos verificables.
+- Esta estrategia de APIs externas aun no esta aprobada y no debe tratarse como
+  decision cerrada.
+
+## Propuestas por vista no aprobadas
+
+Fuente: criterio tecnico del usuario. Ver
+[Propuestas UX y arquitectura por vista](proposals/view-ux-architecture-proposals.md).
+
+- Predicciones: ADR-0009 propone priorizar predicciones diarias, reducir el peso
+  visual de predicciones generales bloqueadas y revisar scoring para aumentar el
+  foco diario.
+- Ranking: ADR-0010 propone evaluar normalizacion por tamano de grupo, separar
+  ranking global de desempeno personal y agregar tabla avanzada con paginado,
+  sort y filtros.
+- Home: ADR-0011 propone que las predicciones del dia redirijan a la vista
+  Predicciones y que "recordar" pueda conectarse con Teams si se aprueba la
+  integracion.
+- Estas propuestas no estan aprobadas y no deben tratarse como decision cerrada.
+
 ## Preguntas abiertas principales
 
 - Cual es la tabla final de puntuacion para todas las mecanicas.
-- Como se resolveran categorias subjetivas como seleccion sorpresa, seleccion
-  decepcion y mejor defensa.
-- Si la resolucion con IA/internet sera obligatoria, opcional o solo asistencia
-  para administradores.
+- Como se resolveran categorias subjetivas como seleccion sorpresa y seleccion
+  decepcion.
+- Que proveedor externo se elegira para calendario, resultados en vivo, eventos y
+  estadisticas durante el Mundial, si se aprueba la estrategia propuesta.
 - Como se definiran areas o equipos internos para ranking grupal.
 - Como se resolvera la lista concreta de administradores: tabla interna, allowlist
   o grupo corporativo.
+- Que formula de normalizacion seria justa y facil de explicar para ranking por
+  grupos, si se aprueba ADR-0010.
+- Si los recordatorios por Teams deben ir a usuario, grupo o canal, si se aprueba
+  ADR-0011.
+- Si los badges de selecciones favoritas deben ser estandarizados o usar color
+  principal por pais.

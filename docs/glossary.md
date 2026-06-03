@@ -120,3 +120,71 @@ servidor o servicios, no solo en la UI.
 
 Fotografia de perfil obtenida desde Microsoft cuando esta disponible. Si no se
 recibe, la app debe usar iniciales u otro fallback visual.
+
+## Fuente canonica
+
+Lugar donde la app considera que vive el dato valido para operar UI, scoring y
+ranking. Para Ara World Cup, la fuente canonica interna es Cloudflare D1.
+
+## API externa
+
+Proveedor o servicio fuera de la app que entrega datos estructurados, por ejemplo
+fixtures, resultados, eventos, standings, estadisticas o perfil corporativo.
+
+## Ingestion
+
+Proceso que trae datos desde una API externa o dataset, los normaliza y los guarda
+o cachea en D1 antes de que la app los use.
+
+## Dato verificable
+
+Dato objetivo que puede comprobarse con una fuente estructurada o oficial, como
+horario de partido, marcador final, goles, tarjetas, standings o top scorers.
+
+## Dato ambiguo
+
+Dato que requiere interpretacion o criterio de negocio, como seleccion sorpresa o
+seleccion decepcion. Puede recibir asistencia de IA, pero la resolucion final debe
+quedar validada por admin.
+
+## Override admin
+
+Correccion manual hecha por un administrador sobre un dato importado o calculado.
+Debe ganar sobre la API externa y conservar suficiente contexto para auditoria.
+
+## Normalizacion de ranking por grupo
+
+Propuesta para comparar areas o equipos internos con tamanos distintos sin usar
+solo suma bruta de puntos. Puede evaluarse con promedio por participante activo,
+top N o ponderacion por participacion.
+
+Estado: propuesta no aprobada por ADR-0010.
+
+## Log de puntos
+
+Registro que explica como un usuario gano puntos: prediccion, resultado,
+criterio de scoring, puntos obtenidos y momento de calculo.
+
+Estado: propuesta no aprobada por ADR-0010.
+
+## Subvista personal
+
+Vista o seccion enfocada en el desempeno de un usuario, separada del ranking
+global. Podria contener log de puntos, rachas, aciertos y movimientos.
+
+Estado: propuesta no aprobada por ADR-0010.
+
+## Recordatorio Teams
+
+Mensaje o aviso enviado mediante Teams para recordar partidos, cierres o
+predicciones pendientes.
+
+Estado: propuesta no aprobada por ADR-0011.
+
+## Badge de seleccion favorita
+
+Indicador visual para una seleccion favorita del usuario. Esta abierta la
+decision entre un estilo estandar para todos los paises o colores propios por
+seleccion.
+
+Estado: pregunta abierta en propuestas por vista.

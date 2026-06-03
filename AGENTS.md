@@ -132,3 +132,23 @@ aplicacion.
   no solo ocultando controles en UI.
 - Si el runtime de Cloudflare obliga a ajustar NextAuth, mantener la decision de
   identidad corporativa Microsoft salvo ADR contrario.
+
+## Fuentes externas y APIs
+
+- La estrategia de APIs tradicionales para datos verificables esta documentada en
+  ADR-0008 con estado `Proposed`; no tratarla como decision aceptada.
+- Cuando se investiguen datos objetivos de futbol, usar la propuesta como guia de
+  evaluacion: buscar APIs tradicionales, datasets estructurados o fuentes
+  oficiales antes de proponer IA.
+- Tratar Cloudflare D1 como fuente canonica interna solo para decisiones ya
+  aceptadas; la ingestion/cache de APIs externas hacia D1 sigue pendiente de
+  aprobacion.
+- No documentar IA como fuente final propuesta para marcadores, resultados,
+  standings, top scorers, seleccion con mas goles, mejor defensa u otros datos
+  objetivos sin marcarlo como riesgo o alternativa rechazada.
+- IA puede proponerse como asistencia en categorias ambiguas, narrativa y
+  explicaciones, siempre con evidencia de datos normalizados y validacion admin.
+- Las correcciones admin sobre datos externos son una propuesta de control
+  operativo; si se aprueban, deberan documentarse como overrides auditables.
+- Al recomendar proveedores, priorizar opciones gratis o baratas y documentar
+  fecha, costo aproximado, cobertura, limites y riesgos de cuota.
