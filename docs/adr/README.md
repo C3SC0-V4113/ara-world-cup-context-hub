@@ -25,6 +25,7 @@ Cup.
 | [0009](0009-propose-rebalancing-predictions-ux-and-daily-scoring.md) | Proponer rebalance de UX de predicciones y scoring diario | Proposed |
 | [0010](0010-propose-normalized-group-ranking-and-personal-performance-view.md) | Proponer ranking grupal normalizado y vista de desempeno personal | Proposed |
 | [0011](0011-propose-teams-reminders-and-home-reminder-flow.md) | Proponer recordatorios por Teams y flujo desde Home | Proposed |
+| [0012](0012-propose-d1-schema-options-for-manual-and-api-ingestion.md) | Proponer opciones de schema D1 para ingesta manual y API-Football | Proposed |
 
 ## Criterio de uso
 

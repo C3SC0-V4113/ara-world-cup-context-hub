@@ -188,3 +188,38 @@ decision entre un estilo estandar para todos los paises o colores propios por
 seleccion.
 
 Estado: pregunta abierta en propuestas por vista.
+
+## Sync run
+
+Ejecucion de un proceso de ingestion que trae datos desde un proveedor externo,
+registra inicio, fin, estado, errores y volumen de datos procesado.
+
+Estado: propuesta no aprobada por ADR-0012.
+
+## Provider entity
+
+Mapeo entre un identificador externo de proveedor y una entidad interna de la app,
+por ejemplo equipo, partido, jugador o competencia.
+
+Estado: propuesta no aprobada por ADR-0012.
+
+## Raw provider payload
+
+Respuesta cruda de un proveedor externo guardada como JSON para auditoria,
+debugging o reconciliacion.
+
+Estado: propuesta no aprobada por ADR-0012.
+
+## Score event
+
+Registro auditable de puntos ganados por un usuario, asociado a una regla,
+prediccion, partido o categoria.
+
+Estado: propuesta no aprobada por ADR-0012.
+
+## Ranking snapshot
+
+Foto calculada del ranking en un momento especifico. Permite evitar recalcular
+todo en cada lectura y facilita comparar cambios de posicion.
+
+Estado: propuesta no aprobada por ADR-0012.

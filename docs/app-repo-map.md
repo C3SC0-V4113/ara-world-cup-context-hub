@@ -87,6 +87,8 @@ La migracion previa incluye:
   pendiente de ADR-0011.
 - Decision pendiente sobre badges de selecciones favoritas: estilo unico o color
   principal por pais.
+- Posible migracion hacia un schema D1 manual/admin o un schema D1 con ingestion
+  API-Football, pendiente de ADR-0012.
 
 ## Relacion entre repos
 
@@ -106,3 +108,5 @@ La migracion previa incluye:
   validacion admin. No es una decision vigente.
 - Para propuestas UX/arquitectura por vista, este hub registra propuestas en
   ADR-0009, ADR-0010 y ADR-0011. No son decisiones vigentes.
+- Para schemas D1, este hub registra opciones propuestas en ADR-0012. No es una
+  decision vigente ni una migracion ejecutable.

@@ -54,6 +54,7 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Reglas de puntuacion](docs/rules/scoring-rules.md)
 - [Reglas de bloqueo](docs/rules/prediction-locking.md)
 - [Plataforma y base de datos](docs/architecture/platform-and-database.md)
+- [Propuesta de opciones de schema D1](docs/architecture/d1-schema-options.md)
 - [Identidad y acceso](docs/architecture/identity-and-access.md)
 - [Propuesta de APIs tradicionales y fuentes de datos](docs/integrations/football-data-apis.md)
 - [Propuestas UX y arquitectura por vista](docs/proposals/view-ux-architecture-proposals.md)
@@ -67,6 +68,8 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Modelo conceptual de datos](docs/diagrams/conceptual-data-model.md)
 - [Navegacion Home, Ranking y Gamificacion](docs/diagrams/home-ranking-navigation.md)
 - [Propuesta de ingestion de datos externos](docs/diagrams/external-data-ingestion.md)
+- [Propuesta D1 con ingesta manual](docs/diagrams/d1-manual-ingestion-architecture.md)
+- [Propuesta D1 con API-Football](docs/diagrams/d1-api-football-ingestion-architecture.md)
 
 Los diagramas estan en Mermaid para que puedan mantenerse como texto versionado.
 

@@ -130,6 +130,9 @@ Fuente: criterio tecnico del usuario. Ver
 - Home: ADR-0011 propone que las predicciones del dia redirijan a la vista
   Predicciones y que "recordar" pueda conectarse con Teams si se aprueba la
   integracion.
+- Datos/D1: ADR-0012 propone comparar dos schemas para Cloudflare D1: ingesta
+  manual/admin con IA asistiva e ingestion externa con API-Football como
+  proveedor favorito propuesto.
 - Estas propuestas no estan aprobadas y no deben tratarse como decision cerrada.
 
 ## Preguntas abiertas principales
@@ -148,3 +151,5 @@ Fuente: criterio tecnico del usuario. Ver
   ADR-0011.
 - Si los badges de selecciones favoritas deben ser estandarizados o usar color
   principal por pais.
+- Si el proyecto debe iniciar con schema manual/admin, schema API-Football o un
+  camino incremental entre ambos.
