@@ -1,18 +1,63 @@
 # Ara World Cup Context Hub
 
-Repositorio documental para centralizar contexto, decisiones tecnicas y guias de trabajo de la aplicacion web Ara World Cup.
+Repositorio documental para centralizar contexto de producto, decisiones
+funcionales, ADRs y guias de trabajo de Ara World Cup.
+
+Este repositorio no contiene codigo de aplicacion. La implementacion vive en:
+
+```text
+E:\Repositorios\ara-world-cup
+```
 
 ## Proposito
 
-Este repositorio no contiene codigo de aplicacion. Su funcion es mantener documentacion util para agentes y personas que trabajen en el producto:
+El hub preserva memoria tecnica y de producto para que personas y agentes puedan
+entender el juego interno de predicciones del Mundial sin depender de una
+transcripcion cruda o de conocimiento oral.
 
-- contexto del proyecto y convenciones de colaboracion;
-- Architecture Decision Records (ADRs);
-- skills de agente necesarias para mantener documentacion tecnica consistente.
+Sirve para:
+
+- documentar decisiones funcionales y tecnicas de alto nivel;
+- explicar reglas del juego, scoring, ranking y bloqueo de predicciones;
+- mantener glosarios y diagramas editables;
+- orientar futuras implementaciones en el repo de aplicacion.
+
+## Jerarquia de fuentes
+
+La reunion de referencia se interpreta con esta regla:
+
+- **Alejandra Alvarado** es fuente principal de intencion de producto, UX deseada
+  y necesidades no tecnicas.
+- **Walter Zetino** es fuente principal de criterio tecnico, arquitectura, riesgos,
+  priorizacion y forma de implementacion.
+
+Las ideas de Alejandra deben traducirse a requerimientos claros aunque hayan sido
+expresadas de forma vaga. Las observaciones de Walter tienen mayor peso para
+decisiones tecnicas, riesgos y priorizacion.
+
+## Documentacion principal
+
+- [Contexto de producto](docs/product-context.md)
+- [Sintesis de reunion](docs/meeting-notes/sync-mundial.md)
+- [Glosario](docs/glossary.md)
+- [Reglas de puntuacion](docs/rules/scoring-rules.md)
+- [Reglas de bloqueo](docs/rules/prediction-locking.md)
+- [Mapa del repo de aplicacion](docs/app-repo-map.md)
+- [Architecture Decision Records](docs/adr/README.md)
+
+## Diagramas
+
+- [Ciclo de vida de predicciones](docs/diagrams/prediction-lifecycle.md)
+- [Flujo de scoring y ranking](docs/diagrams/scoring-ranking-flow.md)
+- [Modelo conceptual de datos](docs/diagrams/conceptual-data-model.md)
+- [Navegacion Home, Ranking y Gamificacion](docs/diagrams/home-ranking-navigation.md)
+
+Los diagramas estan en Mermaid para que puedan mantenerse como texto versionado.
 
 ## Skills instaladas
 
-La skill `architecture-decision-records` esta instalada desde `wshobson/agents` para ayudar a redactar y mantener ADRs.
+La skill `architecture-decision-records` esta instalada desde `wshobson/agents`
+para ayudar a redactar y mantener ADRs.
 
 Instalacion reproducible:
 
@@ -26,13 +71,17 @@ La instalacion canonica vive en:
 .agents/skills/architecture-decision-records/
 ```
 
-El archivo `skills-lock.json` registra la skill instalada y debe versionarse junto con el repositorio.
+El archivo `skills-lock.json` registra la skill instalada y debe versionarse junto
+con el repositorio.
 
 ## Compatibilidad con Claude Code
 
-`.agents` es la fuente canonica de skills del proyecto. `.claude` apunta a `.agents` para que Claude Code resuelva las mismas skills sin duplicar archivos.
+`.agents` es la fuente canonica de skills del proyecto. `.claude` apunta a
+`.agents` para que Claude Code resuelva las mismas skills sin duplicar archivos.
 
-En esta maquina Windows, `.claude` puede quedar como junction si el sistema bloquea symlinks sin privilegios de administrador. No edites `.claude` directamente; edita `.agents`.
+En esta maquina Windows, `.claude` puede quedar como junction si el sistema
+bloquea symlinks sin privilegios de administrador. No edites `.claude`
+directamente; edita `.agents`.
 
 ## Documentacion para agentes
 
