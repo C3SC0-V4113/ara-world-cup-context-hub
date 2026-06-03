@@ -22,6 +22,10 @@ Sirve para:
 - mantener glosarios y diagramas editables;
 - orientar futuras implementaciones en el repo de aplicacion.
 
+Decision arquitectonica vigente: la base de datos objetivo es **Cloudflare D1**,
+operada con **Wrangler**. El despliegue primario de la app web debe ser
+**Cloudflare**, con **Vercel** solo como fallback si Cloudflare bloquea el avance.
+
 ## Jerarquia de fuentes
 
 La reunion de referencia se interpreta con esta regla:
@@ -42,6 +46,7 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Glosario](docs/glossary.md)
 - [Reglas de puntuacion](docs/rules/scoring-rules.md)
 - [Reglas de bloqueo](docs/rules/prediction-locking.md)
+- [Plataforma y base de datos](docs/architecture/platform-and-database.md)
 - [Mapa del repo de aplicacion](docs/app-repo-map.md)
 - [Architecture Decision Records](docs/adr/README.md)
 

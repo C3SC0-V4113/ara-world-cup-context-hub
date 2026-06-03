@@ -91,6 +91,15 @@ Guia tecnica:
 4. Home como resumen de la experiencia.
 5. Calendario, recordatorios y bot de Teams como extensiones.
 
+## Decisiones arquitectonicas cerradas
+
+- La base de datos objetivo es Cloudflare D1.
+- Wrangler debe usarse como herramienta de plataforma del proyecto.
+- El despliegue primario de la app web debe ser Cloudflare.
+- Vercel queda como fallback si Cloudflare no permite avanzar de forma viable.
+- Supabase/PostgreSQL queda como referencia historica del repo de aplicacion, no
+  como backend preferido.
+
 ## Preguntas abiertas principales
 
 - Cual es la tabla final de puntuacion para todas las mecanicas.

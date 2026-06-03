@@ -33,9 +33,14 @@ actual contra la intencion de producto y las recomendaciones tecnicas.
   diarios.
 - `lib/scoring.ts`: tabla visible de reglas de puntuacion.
 
-## Modelo de datos actual
+## Modelo de datos observado
 
-La migracion `supabase/migrations/202605280001_initial_schema.sql` ya incluye:
+La migracion `supabase/migrations/202605280001_initial_schema.sql` existe como
+referencia historica del modelo previo basado en Supabase/PostgreSQL. Por ADR
+0006, Supabase ya no es el destino arquitectonico; el schema debe migrarse a
+Cloudflare D1.
+
+La migracion previa incluye:
 
 - `users`
 - `teams`
@@ -50,6 +55,8 @@ La migracion `supabase/migrations/202605280001_initial_schema.sql` ya incluye:
 
 ## Brechas principales
 
+- Migrar de Supabase/PostgreSQL a Cloudflare D1.
+- Crear o completar configuracion Wrangler y bindings D1.
 - Scoring completo de predicciones generales.
 - Resolucion administrable de categorias subjetivas.
 - Modelo explicito para penales.
@@ -65,3 +72,6 @@ La migracion `supabase/migrations/202605280001_initial_schema.sql` ya incluye:
   compartida para agentes.
 - Si una decision funcional del hub cambia la arquitectura de la app, debe
   considerarse un ADR tecnico en el repo de aplicacion.
+- Para base de datos y despliegue, este hub registra como decision vigente:
+  Cloudflare D1, Wrangler y despliegue primario en Cloudflare con Vercel como
+  fallback.

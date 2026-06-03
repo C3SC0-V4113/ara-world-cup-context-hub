@@ -107,3 +107,15 @@ Este hub no debe reemplazar los ADRs tecnicos del repo de aplicacion. Si una
 decision funcional aqui implica cambios de stack, datos o arquitectura de codigo,
 documenta el contexto en este hub y recomienda un ADR tecnico en el repo de
 aplicacion.
+
+## Plataforma y base de datos
+
+- Tratar Supabase/PostgreSQL como estado anterior, legado o fuente de migracion,
+  no como backend preferido.
+- La base de datos objetivo es Cloudflare D1.
+- Wrangler es la herramienta esperada para configurar y operar recursos de
+  Cloudflare.
+- El despliegue primario de la web es Cloudflare.
+- Vercel solo debe documentarse como fallback si Cloudflare no resulta viable.
+- Si una fuente futura contradice esta decision, crear un nuevo ADR que la
+  superseda en lugar de editar silenciosamente el ADR aceptado.

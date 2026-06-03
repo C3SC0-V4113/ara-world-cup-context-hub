@@ -19,6 +19,7 @@ Cup.
 | [0003](0003-lock-daily-predictions-per-match.md) | Bloquear predicciones diarias por partido | Accepted |
 | [0004](0004-admin-controlled-scoring-and-result-resolution.md) | Control admin de scoring y resolucion de resultados | Accepted |
 | [0005](0005-prioritize-gamification-ranking-before-calendar-reminders.md) | Priorizar gamificacion y ranking antes de recordatorios | Accepted |
+| [0006](0006-use-cloudflare-d1-and-cloudflare-deployment.md) | Usar Cloudflare D1 y despliegue primario en Cloudflare | Accepted |
 
 ## Criterio de uso
 
