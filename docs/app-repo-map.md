@@ -33,6 +33,14 @@ actual contra la intencion de producto y las recomendaciones tecnicas.
   diarios.
 - `lib/scoring.ts`: tabla visible de reglas de puntuacion.
 
+## Identidad y acceso observado
+
+- `auth.ts` usa `next-auth/providers/microsoft-entra-id`.
+- El flujo solicita scopes `openid profile email User.Read`.
+- La sesion mapea `id`, `name`, `email` e `image` cuando el proveedor los entrega.
+- `types/index.ts` ya modela `UserRole = "user" | "admin"`.
+- `User` ya contempla `avatarUrl` y `role`.
+
 ## Modelo de datos observado
 
 La migracion `supabase/migrations/202605280001_initial_schema.sql` existe como
@@ -62,7 +70,8 @@ La migracion previa incluye:
 - Modelo explicito para penales.
 - Desempates para partido con mas goles del dia.
 - Ranking auditable con desglose de puntos.
-- Remplazo de usuario placeholder por autenticacion real.
+- Remplazo de usuario placeholder por autenticacion corporativa real.
+- Fuente controlada para asignar administradores.
 - Definicion final de areas/equipos internos para ranking grupal.
 
 ## Relacion entre repos
@@ -75,3 +84,5 @@ La migracion previa incluye:
 - Para base de datos y despliegue, este hub registra como decision vigente:
   Cloudflare D1, Wrangler y despliegue primario en Cloudflare con Vercel como
   fallback.
+- Para identidad y roles, este hub registra como decision vigente: cuentas
+  corporativas Microsoft/Windows usadas en Teams y roles base `user`/`admin`.

@@ -25,6 +25,8 @@ Sirve para:
 Decision arquitectonica vigente: la base de datos objetivo es **Cloudflare D1**,
 operada con **Wrangler**. El despliegue primario de la app web debe ser
 **Cloudflare**, con **Vercel** solo como fallback si Cloudflare bloquea el avance.
+La identidad objetivo usa cuentas corporativas Microsoft/Windows usadas en Teams,
+con roles base `user` y `admin`.
 
 ## Jerarquia de fuentes
 
@@ -47,6 +49,7 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Reglas de puntuacion](docs/rules/scoring-rules.md)
 - [Reglas de bloqueo](docs/rules/prediction-locking.md)
 - [Plataforma y base de datos](docs/architecture/platform-and-database.md)
+- [Identidad y acceso](docs/architecture/identity-and-access.md)
 - [Mapa del repo de aplicacion](docs/app-repo-map.md)
 - [Architecture Decision Records](docs/adr/README.md)
 

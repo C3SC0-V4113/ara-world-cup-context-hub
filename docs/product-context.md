@@ -99,6 +99,11 @@ Guia tecnica:
 - Vercel queda como fallback si Cloudflare no permite avanzar de forma viable.
 - Supabase/PostgreSQL queda como referencia historica del repo de aplicacion, no
   como backend preferido.
+- El login debe usar cuentas corporativas Microsoft/Windows usadas en Teams.
+- La app debe preferir nombre, correo y fotografia desde Microsoft; si la
+  fotografia no esta disponible, debe usar un avatar fallback.
+- Los roles iniciales son `user` para participantes normales y `admin` para
+  operacion administrativa.
 
 ## Preguntas abiertas principales
 
@@ -108,4 +113,5 @@ Guia tecnica:
 - Si la resolucion con IA/internet sera obligatoria, opcional o solo asistencia
   para administradores.
 - Como se definiran areas o equipos internos para ranking grupal.
-- Si la foto de perfil vendra desde Microsoft o se cargara manualmente.
+- Como se resolvera la lista concreta de administradores: tabla interna, allowlist
+  o grupo corporativo.

@@ -119,3 +119,16 @@ aplicacion.
 - Vercel solo debe documentarse como fallback si Cloudflare no resulta viable.
 - Si una fuente futura contradice esta decision, crear un nuevo ADR que la
   superseda en lugar de editar silenciosamente el ADR aceptado.
+
+## Identidad y acceso
+
+- Tratar Microsoft Entra ID o las cuentas corporativas Microsoft/Windows usadas
+  en Teams como proveedor de identidad objetivo.
+- Preservar los roles base `user` y `admin` salvo que un ADR posterior los
+  superseda.
+- Documentar nombre, correo y fotografia/avatar como datos deseados del perfil
+  corporativo; la fotografia siempre debe tener fallback.
+- Las acciones administrativas deben protegerse por rol en servidor o servicios,
+  no solo ocultando controles en UI.
+- Si el runtime de Cloudflare obliga a ajustar NextAuth, mantener la decision de
+  identidad corporativa Microsoft salvo ADR contrario.

@@ -20,6 +20,7 @@ Cup.
 | [0004](0004-admin-controlled-scoring-and-result-resolution.md) | Control admin de scoring y resolucion de resultados | Accepted |
 | [0005](0005-prioritize-gamification-ranking-before-calendar-reminders.md) | Priorizar gamificacion y ranking antes de recordatorios | Accepted |
 | [0006](0006-use-cloudflare-d1-and-cloudflare-deployment.md) | Usar Cloudflare D1 y despliegue primario en Cloudflare | Accepted |
+| [0007](0007-use-corporate-microsoft-identity-and-role-based-access.md) | Usar identidad corporativa Microsoft y acceso por roles | Accepted |
 
 ## Criterio de uso
 

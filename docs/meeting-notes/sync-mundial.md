@@ -68,7 +68,8 @@ sintesis operacional.
 - Definir resolucion de categorias subjetivas y responsables de correccion manual.
 - Definir si areas/equipos internos seran configurables.
 - Definir narrativa de gamificacion basada en eventos reales.
-- Confirmar origen de foto de perfil: Microsoft o carga manual.
+- Origen de foto de perfil: en la reunion quedo como tema por confirmar; ADR
+  0007 lo resuelve posteriormente a favor de Microsoft con fallback visual.
 
 ## Riesgos
 

@@ -89,7 +89,34 @@ Guia tecnica: priorizar narrativa basada en datos reales y ranking confiable.
 Canal potencial para recordatorios, mensajes o consultas rapidas. Se prefiere como
 complemento antes que bloquear calendarios corporativos.
 
+## Identidad corporativa
+
+Cuenta laboral usada por las personas de la empresa en el ecosistema Microsoft,
+incluyendo Windows y Teams. Es la identidad objetivo para ingresar a Ara World
+Cup.
+
+## Microsoft Entra ID
+
+Proveedor corporativo esperado para autenticar usuarios. Puede entregar un id
+estable, nombre, correo y fotografia si los permisos del tenant lo permiten.
+
+## Usuario normal
+
+Rol `user`. Participante del juego que puede ver la app, gestionar sus
+predicciones y participar en ranking.
+
 ## Admin
 
 Rol o panel responsable de operar reglas, resultados, cierres, categorias
 subjetivas y recalculos de ranking.
+
+## Administrador
+
+Rol `admin`. Usuario con permisos extra para operar configuracion, cierres,
+resultados, scoring y resoluciones subjetivas. Sus permisos deben validarse en
+servidor o servicios, no solo en la UI.
+
+## Avatar corporativo
+
+Fotografia de perfil obtenida desde Microsoft cuando esta disponible. Si no se
+recibe, la app debe usar iniciales u otro fallback visual.
