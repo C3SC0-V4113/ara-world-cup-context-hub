@@ -8,10 +8,10 @@ predicciones, ranking y gamificacion entre personas y areas de la empresa.
 El producto busca que las personas puedan:
 
 - registrar predicciones generales del torneo;
-- registrar predicciones diarias por partido;
-- seguir su desempeno en ranking individual y por area;
+- registrar predicciones del dia por partido;
+- seguir su desempeno en ranking individual y por grupos;
 - consultar partidos relevantes del dia;
-- ver mensajes y elementos de gamificacion que mantengan vivo el juego.
+- ver mensajes y elementos de gamificacion basados en datos reales.
 
 ## Jerarquia de fuentes
 
@@ -34,26 +34,25 @@ Requerimiento de producto:
 
 - Mostrar un resumen del dia: partidos, predicciones pendientes y cierre cercano.
 - Resaltar si juega una seleccion favorita del usuario.
-- Mostrar una vista resumida del ranking general con enlace al ranking completo.
-- Mostrar predicciones generales del usuario y partidos de hoy.
-- Incluir recordatorios o mensajes relacionados con partidos relevantes, si eso no
-  genera confusion operativa.
+- Mostrar una vista resumida del ranking con enlace al ranking completo.
+- Mostrar accesos hacia predicciones y partidos de hoy.
 
-Guia tecnica:
+Decision aceptada:
 
-- Home debe ser complemento, no el centro de la implementacion inicial.
-- El foco inicial recomendado es gamificacion, predicciones y ranking.
-- Calendario y recordatorios deben quedar como capacidades secundarias porque el
-  calendario del Mundial esta disponible por otras vias.
+- Home no guarda predicciones como quick action.
+- Toda accion de prediccion redirige a la vista Predicciones.
+- Notificaciones y recordatorios quedan fuera de scope y deben mostrarse
+  deshabilitados si aparecen en UI.
 
 ### Predicciones
 
 Requerimiento de producto:
 
-- Separar predicciones generales del torneo y predicciones diarias por partido.
+- Separar `Predicciones del dia` y `Predicciones generales` en tabs.
+- Usar `Predicciones del dia` como tab principal.
 - Permitir que las predicciones generales se completen una vez y luego queden
   bloqueadas.
-- Permitir que las predicciones diarias se editen hasta 30 minutos antes del
+- Permitir que las predicciones del dia se editen hasta 30 minutos antes del
   inicio de cada partido.
 - Explicar dentro de la vista como se ganan puntos.
 
@@ -70,26 +69,27 @@ Guia tecnica:
 Requerimiento de producto:
 
 - Mostrar ranking individual.
-- Mostrar ranking por area o equipo interno.
-- Destacar un top 3, pero permitir ver el ranking completo.
-- Agregar narrativa de gamificacion: rachas, cambios de posicion, aciertos y
-  mensajes dinamicos.
+- Mostrar ranking por grupos normalizado por promedio de participantes activos.
+- Mostrar ranking por grupos sin normalizacion por suma bruta.
+- Destacar top 3, pero permitir ver tabla completa.
+- Agregar filtros y sort en tabla de ranking.
+- Mostrar desempeno personal con log de puntos, desglose de aciertos y
+  movimientos.
 
 Guia tecnica:
 
 - El ranking basico debe existir antes de graficas o visualizaciones avanzadas.
-- La agregacion por area requiere definir claramente como se crean y nombran los
+- La agregacion por grupo requiere definir claramente como se crean y nombran los
   grupos internos.
-- Los mensajes de gamificacion deben derivarse de datos confiables, no de frases
-  hardcodeadas sin relacion con eventos reales.
+- Los mensajes de gamificacion deben derivarse de datos confiables.
 
 ## Prioridad funcional sugerida
 
-1. Predicciones y reglas de bloqueo.
-2. Scoring y ranking basico.
-3. Ranking por area y narrativa de gamificacion.
-4. Home como resumen de la experiencia.
-5. Calendario, recordatorios y bot de Teams como extensiones.
+1. Predicciones, tabs y reglas de bloqueo.
+2. Scoring aceptado y score events auditables.
+3. Ranking individual y ranking por grupos normalizado/sin normalizacion.
+4. Home como resumen y redireccion a experiencias dedicadas.
+5. Ingestion API-Football Free con D1 y frescura visible.
 
 ## Decisiones arquitectonicas cerradas
 
@@ -104,52 +104,34 @@ Guia tecnica:
   fotografia no esta disponible, debe usar un avatar fallback.
 - Los roles iniciales son `user` para participantes normales y `admin` para
   operacion administrativa.
+- Datos objetivos de futbol se alimentan con API-Football Free, seed opcional de
+  OpenFootball y cache/fuente canonica en D1.
+- No se usaran LLMs en esta version.
 
-## Propuestas tecnicas no aprobadas
+## Decisiones por vista y scoring
 
-- ADR-0008 propone que los datos objetivos de futbol vengan de APIs
-  tradicionales, datasets o fuentes estructuradas siempre que sea posible.
-- ADR-0008 propone que Cloudflare D1 conserve la copia importada/cacheada para
-  UI, scoring y ranking.
-- ADR-0008 propone limitar IA a asistencia para categorias ambiguas y narrativa,
-  no como fuente final para datos verificables.
-- Esta estrategia de APIs externas aun no esta aprobada y no debe tratarse como
-  decision cerrada.
+- ADR-0008 acepta APIs tradicionales para datos verificables.
+- ADR-0009 acepta tabs en Predicciones y scoring global reforzado con mas
+  mecanicas por partido.
+- ADR-0010 acepta ranking individual, ranking grupal normalizado por promedio
+  activo y ranking grupal sin normalizacion.
+- ADR-0011 acepta Home como redireccion y notificaciones fuera de scope.
+- ADR-0012 acepta schema D1 orientado a API-Football Free.
 
-## Propuestas por vista no aprobadas
+## Fuera de alcance actual
 
-Fuente: criterio tecnico del usuario. Ver
-[Propuestas UX y arquitectura por vista](proposals/view-ux-architecture-proposals.md).
-
-- Predicciones: ADR-0009 propone priorizar predicciones diarias, reducir el peso
-  visual de predicciones generales bloqueadas y revisar scoring para aumentar el
-  foco diario.
-- Ranking: ADR-0010 propone evaluar normalizacion por tamano de grupo, separar
-  ranking global de desempeno personal y agregar tabla avanzada con paginado,
-  sort y filtros.
-- Home: ADR-0011 propone que las predicciones del dia redirijan a la vista
-  Predicciones y que "recordar" pueda conectarse con Teams si se aprueba la
-  integracion.
-- Datos/D1: ADR-0012 propone comparar dos schemas para Cloudflare D1: ingesta
-  manual/admin con IA asistiva e ingestion externa con API-Football como
-  proveedor favorito propuesto.
-- Estas propuestas no estan aprobadas y no deben tratarse como decision cerrada.
+- Seleccion sorpresa.
+- Seleccion decepcion.
+- LLMs para scoring, narrativa o resoluciones.
+- Notificaciones, recordatorios y Teams bot.
+- Rankings por prediccion semanal, prediccion general, preccion general o
+  prediccion del dia.
 
 ## Preguntas abiertas principales
 
-- Cual es la tabla final de puntuacion para todas las mecanicas.
-- Como se resolveran categorias subjetivas como seleccion sorpresa y seleccion
-  decepcion.
-- Que proveedor externo se elegira para calendario, resultados en vivo, eventos y
-  estadisticas durante el Mundial, si se aprueba la estrategia propuesta.
 - Como se definiran areas o equipos internos para ranking grupal.
 - Como se resolvera la lista concreta de administradores: tabla interna, allowlist
   o grupo corporativo.
-- Que formula de normalizacion seria justa y facil de explicar para ranking por
-  grupos, si se aprueba ADR-0010.
-- Si los recordatorios por Teams deben ir a usuario, grupo o canal, si se aprueba
-  ADR-0011.
 - Si los badges de selecciones favoritas deben ser estandarizados o usar color
   principal por pais.
-- Si el proyecto debe iniciar con schema manual/admin, schema API-Football o un
-  camino incremental entre ambos.
+- Que retencion tendran payloads crudos y sync runs de proveedores externos.

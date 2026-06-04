@@ -2,66 +2,67 @@
 
 ## Estado general
 
-La reunion dejo una tabla de puntos propuesta, pero no todas las reglas quedaron
-cerradas con la misma confianza. Este documento separa lo confirmado de lo
-ambiguo para evitar endurecer supuestos incorrectos.
+Accepted.
 
-## Tabla propuesta
+El sistema de puntos se reworkea para mantener predicciones globales relevantes,
+pero aumentar las formas simples de ganar puntos por partido. Las reglas deben
+seguir siendo administrables sin tocar codigo y todo calculo debe producir
+`score_events` auditables.
+
+## Predicciones globales
 
 | Mecanica | Puntos | Estado | Fuente |
 | --- | ---: | --- | --- |
-| Campeon acertado | 20 | Confirmada | Alejandra lo enumera y Walter lo valida como mockup util |
-| Finalista | 12 | Confirmada con definicion pendiente | Alejandra |
-| Seleccion sorpresa | 10 | Confirmada como valor, criterio pendiente | Alejandra, con alerta tecnica de Walter |
-| Seleccion decepcion | 10 | Confirmada como valor, criterio pendiente | Alejandra aclara que son 10 y 10 |
-| Ganador del partido | 2 | Confirmada | Alejandra |
-| Empate acertado | 3 | Confirmada | Alejandra |
-| Ambos equipos anotan | 1 | Confirmada | Alejandra |
-| Marcador exacto | 5 | Confirmada | Alejandra |
-| Partido con mas goles del dia | 3 | Confirmada con desempate pendiente | Alejandra |
-| Penales acertados | 3 | Sugerida para eliminatorias | Alejandra |
-| Seleccion con mas goles | Pendiente | Ambigua | Alejandra la menciona, no queda puntaje claro |
-| Mejor defensa | Pendiente | Ambigua | Alejandra la menciona, no queda puntaje claro |
+| Campeon acertado | 25 | Accepted | Decision posterior del usuario |
+| Finalista acertado | 15 | Accepted | Decision posterior del usuario |
+| Seleccion con mas goles | 12 | Accepted | Dato objetivo derivado de goles acumulados |
+| Mejor defensa | 12 | Accepted | Metrica compuesta simple |
+| Clasificados desde grupos | 2 por acierto | Accepted | Opcion multiple por equipos clasificados |
+| Seleccion sorpresa | Fuera de alcance | Accepted | Eliminada por ambiguedad |
+| Seleccion decepcion | Fuera de alcance | Accepted | Eliminada por ambiguedad |
+
+`Clasificados desde grupos` significa equipos que avanzan desde fase de grupos a
+la siguiente ronda eliminatoria. No debe depender del nombre exacto de la ronda.
+
+## Predicciones por partido
+
+| Mecanica | Puntos | Estado |
+| --- | ---: | --- |
+| Marcador exacto | 5 | Accepted |
+| Ganador acertado | 3 | Accepted |
+| Empate acertado | 3 | Accepted |
+| Ambos equipos anotan | 1 | Accepted |
+| Al menos una tarjeta roja | 1 | Accepted |
+| Rango de tarjetas amarillas totales | 1 | Accepted |
+| Rango de tiros al arco totales | 1 | Accepted |
+| Ganador por penales en eliminatorias, si aplica | 2 | Accepted |
+
+## Mejor defensa
+
+La seleccion con mejor defensa se calcula con una metrica compuesta simple:
+
+1. Menor promedio de goles recibidos por partido.
+2. Desempate por porcentaje de clean sheets.
+3. Desempate por menor promedio de tiros al arco recibidos.
+4. Desempate por menor penalizacion disciplinaria por tarjetas.
+
+Si API-Football Free no entrega alguna metrica, se usa la siguiente disponible en
+ese orden. Si solo hay goles recibidos disponibles, la categoria se resuelve con
+ese dato y desempates administrables.
 
 ## Reglas interpretativas
 
-- Las reglas deben poder administrarse sin tocar codigo.
-- La tabla de puntos debe ser fuente de verdad para scoring y para la UI de "como
-  ganas puntos".
+- La tabla de puntos debe ser fuente de verdad para scoring y para la UI de
+  "como ganas puntos".
 - Cambios posteriores en reglas deben dejar claro si aplican retroactivamente o
   solo hacia adelante.
-- Las categorias subjetivas no deben depender exclusivamente de una respuesta de
-  IA.
+- Scoring debe leer datos normalizados desde D1, no payloads crudos de proveedor.
+- Admin puede corregir datos importados mediante overrides auditables.
+- No se usaran LLMs para resolver categorias de scoring.
 
-## Preguntas abiertas
+## Fuera de alcance
 
-- Finalista significa subcampeon, cualquier equipo finalista o un equipo distinto
-  al campeon predicho.
-- Como resolver empate en partido con mas goles del dia.
-- Si marcador exacto en eliminatorias se evalua en 90 minutos, 120 minutos o
-  resultado oficial.
-- Como se captura y evalua "penales acertados".
-- Cuantos puntos otorgan seleccion con mas goles y mejor defensa.
-- Que pasa si admin cambia reglas cuando ya existen predicciones calculadas.
-
-## Recomendacion tecnica
-
-Usar un modelo administrable de reglas de scoring y un flujo de recalculo
-deterministico. La IA puede asistir en categorias subjetivas, pero el resultado
-final debe quedar persistido y auditable por admin.
-
-## Propuesta no aprobada: mas foco en scoring diario
-
-Fuente: criterio tecnico del usuario. Estado: Proposed.
-
-ADR-0009 propone revisar la tabla de puntos para aumentar el peso relativo de
-partidos diarios. La motivacion es que varias mecanicas actuales dependen del fin
-del torneo, mientras que la participacion diaria sostiene la actividad recurrente
-del juego.
-
-Esta propuesta no cambia la tabla actual. Antes de aprobarla se debe definir:
-
-- que mecanicas diarias ganarian mas peso;
-- si las predicciones generales bajarian puntos o solo protagonismo visual;
-- si el cambio aplicaria retroactivamente o solo hacia adelante;
-- como explicar el balance entre aciertos diarios y predicciones de torneo.
+- Seleccion sorpresa.
+- Seleccion decepcion.
+- Notificaciones o recordatorios como fuente de puntos.
+- Scoring basado en narrativa o criterio no verificable.

@@ -1,32 +1,36 @@
-# ADR-0011: Proponer recordatorios por Teams y flujo desde Home
+# ADR-0011: Redirigir predicciones desde Home y dejar notificaciones fuera de scope
 
 ## Estado
 
-Proposed
+Accepted
 
 ## Contexto
 
-La app vive dentro de un ecosistema corporativo basado en Microsoft/Windows/Teams.
-Ya existe una decision aceptada de usar identidad corporativa Microsoft. Tambien
-hay propuestas y conversaciones sobre recordatorios, bot de Teams y mensajes
-ligados a partidos o predicciones pendientes.
+Home puede mostrar partidos del dia, selecciones favoritas, ranking resumido y
+predicciones pendientes. La duda abierta era si Home debia permitir guardar
+predicciones como quick action, redirigir a Predicciones o disparar recordatorios
+por Teams.
 
-El Home puede mostrar partidos del dia, selecciones favoritas y acciones de
-recordar. La duda abierta es si esas acciones deben guardar predicciones,
-redirigir a Predicciones o disparar mensajes por Teams.
+Tambien existian propuestas sobre bot de Teams, mensajes o recordatorios ligados
+a partidos y predicciones pendientes. Para mantener el alcance simple, se decide
+dejar notificaciones fuera de scope por ahora.
 
 ## Decision
 
-Se propone que Home no guarde predicciones diarias como quick action. Las
-acciones de prediccion del dia deberian redirigir a la vista Predicciones para
-completar el flujo.
+Home no guardara predicciones diarias como quick action.
 
-Se propone que la accion "recordar" pueda conectarse a un flujo de Teams, por bot
-o Microsoft Graph, para enviar avisos utiles a un grupo, canal o usuario segun se
-defina.
+Las acciones relacionadas con predicciones deben redirigir a la vista dedicada
+**Predicciones**, especificamente al tab correspondiente:
 
-Teams deberia usarse para mensajes que la gente realmente leeria, no como log
-completo de eventos del juego.
+- `Predicciones del dia` para acciones sobre partidos actuales.
+- `Predicciones generales` para setup o revision de predicciones de torneo.
+
+Las notificaciones, recordatorios y mensajes por Teams quedan fuera de scope. Si
+existen botones, items o componentes que quieran notificar, deben quedar
+deshabilitados o documentados como no disponibles.
+
+Teams y Microsoft Graph se mantienen dentro del contexto de identidad/perfil,
+pero no como canal activo de notificaciones en esta version.
 
 ## Alternativas consideradas
 
@@ -41,34 +45,32 @@ completo de eventos del juego.
 - Ventajas: mantiene una unica experiencia para guardar predicciones.
 - Desventajas: requiere que la vista Predicciones sea rapida y bien enfocada.
 
-### Recordatorios solo dentro de la app
-
-- Ventajas: menor complejidad de integracion.
-- Desventajas: menos visible para usuarios que trabajan en Teams.
-
 ### Recordatorios por Teams
 
 - Ventajas: aprovecha el canal corporativo natural.
-- Desventajas: requiere permisos, control de ruido y definicion de destinatarios.
+- Desventajas: requiere permisos, configuracion, manejo de errores y control de
+  ruido. Queda fuera de scope por ahora.
 
 ## Consecuencias
 
 ### Positivas
 
-- Home se mantiene como resumen y navegacion, no como segunda vista de edicion.
-- Teams puede mejorar recordatorios sin convertir el calendario en prioridad.
-- La accion de recordar puede conectarse con el contexto corporativo real.
+- Home se mantiene como resumen y navegacion.
+- Se evita duplicar reglas de bloqueo, validacion y guardado.
+- La integracion Microsoft se concentra en identidad, perfil y avatar.
+- Se reduce alcance inicial al deshabilitar notificaciones.
 
 ### Negativas
 
-- Se debe definir si el mensaje va a usuario, grupo o canal.
-- Microsoft Graph o bot requieren permisos, configuracion y manejo de errores.
-- Mensajes excesivos pueden generar ruido y rechazo.
+- Usuarios deben entrar a Predicciones para guardar o editar datos.
+- Recordatorios no ayudaran a reducir omisiones en esta fase.
+- Componentes de notificacion existentes deben comunicar estado deshabilitado o
+  no disponible.
 
-## Fuente de la decision/propuesta
+## Fuente de la decision
 
-- Criterio tecnico del usuario.
+- Decision posterior del usuario: Home redirige a Predicciones, no guarda quick
+  actions, y notificaciones quedan fuera de scope/deshabilitadas.
 - Contexto previo: ADR-0007 acepta identidad corporativa Microsoft.
-- Contexto previo: ADR-0005 deja calendario y recordatorios como complemento
-  frente a ranking y gamificacion.
-
+- Contexto previo: ADR-0005 prioriza gamificacion y ranking antes de
+  recordatorios.

@@ -1,33 +1,41 @@
-# ADR-0012: Proponer opciones de schema D1 para ingesta manual y API-Football
+# ADR-0012: Usar schema D1 para ingestion API-Football Free
 
 ## Estado
 
-Proposed
-
-No aprobado.
+Accepted
 
 ## Contexto
 
-La decision vigente de plataforma indica que Cloudflare D1 es la base de datos
-objetivo. Todavia no hay una decision cerrada sobre si los datos deportivos se
-cargaran principalmente por admin o mediante ingestion de APIs externas.
+Cloudflare D1 es la base de datos objetivo. Ya no queda abierta la comparacion
+principal entre ingesta manual y APIs externas: se decidio usar arquitectura con
+API-Football Free, seed opcional de OpenFootball, cache local en D1 y sync
+conservador.
 
-ADR-0008 propone preferir APIs tradicionales para datos verificables, pero sigue
-en estado `Proposed`. Por eso se documentan dos schemas comparables: uno de
-ingesta manual/admin con asistencia de IA y otro con ingestion API-Football.
+El modelo manual/admin se conserva como fallback operativo y como mecanismo de
+overrides, no como fuente primaria de datos deportivos.
 
 ## Decision
 
-Se propone documentar dos modelos D1:
+Usar un schema D1 orientado a ingestion externa con API-Football Free:
 
-- Modelo A: ingesta manual/admin, donde admin carga datos deportivos y aprueba
-  resoluciones asistidas por IA.
-- Modelo B: ingestion API-Football, donde API-Football alimenta fixtures, live,
-  events, statistics y top scorers; OpenFootball alimenta seed inicial; Microsoft
-  Graph alimenta identidad/avatar/Teams.
+- tablas canonicas para usuarios, grupos internos, selecciones, sedes, partidos,
+  predicciones, reglas, score events, rankings, overrides y auditoria;
+- tablas de ingestion para proveedores, mapeos de IDs externos, sync runs,
+  payloads relevantes, eventos, estadisticas, standings, top scorers y
+  conflictos;
+- campos de frescura como `synced_at`, `source_provider`, `source_id` y estado
+  de confianza cuando aplique;
+- admin overrides para corregir datos importados y resolver conflictos.
 
-API-Football queda como proveedor favorito para el modelo API por costo y amplitud
-de endpoints, pero no queda aprobado como proveedor final.
+El plan free de API-Football obliga a limitar polling:
+
+- maximo recomendado de 80 requests automaticas/dia;
+- 20 requests/dia reservadas para admin, pruebas o recuperacion;
+- sync por defecto cada 60 minutos en ventanas de partido;
+- reconciliacion post-partido para resultados, eventos y standings;
+- frontend consulta backend/D1, nunca API-Football directo.
+
+No se usaran LLMs ni tablas de resolucion IA en el modelo objetivo.
 
 ## Alternativas consideradas
 
@@ -36,37 +44,42 @@ de endpoints, pero no queda aprobado como proveedor final.
 - Ventajas: menor complejidad e independencia de proveedores deportivos.
 - Desventajas: mayor carga admin y mas riesgo de retrasos durante partidos.
 
-### Solo schema con API externa
+### Planes pagos de API-Football
 
-- Ventajas: reduce carga manual y mejora acceso a eventos/estadisticas.
-- Desventajas: requiere cuotas, polling, normalizacion, mapeos y manejo de
-  conflictos.
+- Ventajas: mayor margen de requests y polling mas frecuente.
+- Desventajas: costo mensual. Se descarta para la decision actual porque se
+  aprobo usar estrictamente el plan free.
 
-### Documentar ambos modelos comparables
+### Schema API-Football Free + D1
 
-- Ventajas: permite decidir por costo, operacion y madurez sin bloquear el diseno
-  D1.
-- Desventajas: aumenta volumen documental y puede requerir reconciliar modelos
-  antes de implementar.
+- Ventajas: costo externo cero, datos objetivos verificables y menor carga
+  manual que el modelo admin puro.
+- Desventajas: restricciones fuertes de cuota, menor frescura y dependencia de
+  cobertura del plan free.
 
 ## Consecuencias
 
 ### Positivas
 
-- El equipo puede comparar costo operativo manual contra costo de API.
-- El schema canonico puede disenarse para soportar transicion de manual a API.
-- Se evita convertir ADR-0008 en decision aceptada por accidente.
+- El equipo trabaja con el modelo de arquitectura elegido.
+- D1 conserva los datos necesarios para UI, scoring y ranking.
+- La app puede mostrar frescura de datos y seguir operando aunque la API externa
+  este temporalmente inaccesible.
+- Admin conserva capacidad de correccion mediante overrides.
 
 ### Negativas
 
-- Todavia queda pendiente elegir modelo final.
-- El modelo API requiere mas tablas y procesos de sync.
-- El modelo manual puede quedarse corto si se busca live scoring o estadisticas.
+- La cuota free puede limitar live scores y estadisticas ricas.
+- El sync debe ser cuidadoso para no agotar 100 requests/dia.
+- Payloads crudos deben guardarse solo cuando aporten auditoria/debug, con
+  politica de retencion.
+- Algunas mecanicas de scoring por partido pueden quedar condicionadas a datos
+  disponibles por API-Football Free.
 
-## Fuente de la decision/propuesta
+## Fuente de la decision
 
-- Criterio tecnico del usuario.
+- Decision posterior del usuario: elegir arquitectura con APIs externas usando
+  estrictamente API-Football Free, mantener seed opcional de OpenFootball, bajo
+  polling y D1 como base local.
 - ADR-0006: Cloudflare D1 es la base de datos objetivo.
-- ADR-0008: propuesta de APIs tradicionales para datos verificables.
-- Guia de costos y proveedores en `docs/integrations/football-data-apis.md`.
-
+- ADR-0008: APIs tradicionales aceptadas para datos verificables.

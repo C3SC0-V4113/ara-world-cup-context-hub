@@ -2,9 +2,9 @@
 
 ## Prediccion general
 
-Prediccion de largo plazo para todo el torneo. Incluye categorias como campeon,
-finalista, seleccion sorpresa, seleccion decepcion, seleccion con mas goles y
-mejor defensa.
+Prediccion de largo plazo para todo el torneo. Incluye categorias objetivas como
+campeon, finalistas, clasificados desde grupos, seleccion con mas goles y mejor
+defensa.
 
 Fuente de producto: Alejandra. Guia tecnica: debe guardarse por usuario y quedar
 bloqueada cuando cierre la etapa general.
@@ -19,35 +19,34 @@ por partido individual.
 
 ## Seleccion sorpresa
 
-Equipo que llega mas lejos o rinde mejor de lo esperado. Es una categoria
-subjetiva.
-
-Guia tecnica: debe resolverse con criterio administrable, posiblemente asistido
-por IA/internet, pero con correccion manual.
+Categoria subjetiva fuera de alcance para esta version.
 
 ## Seleccion decepcion
 
 Equipo favorito o esperado que queda eliminado antes o rinde peor de lo previsto.
-Es una categoria subjetiva.
-
-Guia tecnica: debe tratarse igual que seleccion sorpresa, con resolucion
-administrable.
+Categoria subjetiva fuera de alcance para esta version.
 
 ## Mejor defensa
 
-Seleccion que recibe menos goles o muestra mejor desempeno defensivo, segun el
-criterio final que se defina.
+Seleccion con mejor desempeno defensivo segun una metrica compuesta simple:
+menor promedio de goles recibidos, con desempates por clean sheets, tiros al arco
+recibidos y menor penalizacion disciplinaria.
 
-Pregunta abierta: si se evaluara estrictamente por goles recibidos o por criterio
-asistido.
+Si API-Football Free no entrega alguna metrica, se usa la siguiente disponible.
 
 ## Seleccion con mas goles
 
-Seleccion que acumula mas goles durante el torneo. Esta categoria es mas objetiva
-que sorpresa o decepcion.
+Seleccion que acumula mas goles durante el torneo. Esta categoria es objetiva y
+se deriva desde datos normalizados en D1.
 
 Pregunta abierta: criterio de desempate si dos o mas selecciones terminan con la
 misma cantidad de goles.
+
+## Clasificados desde grupos
+
+Prediccion general de opcion multiple donde el usuario selecciona equipos que
+avanzan desde fase de grupos a la siguiente ronda eliminatoria. Da 2 puntos por
+cada equipo acertado.
 
 ## Partido con mas goles del dia
 
@@ -86,8 +85,9 @@ Guia tecnica: priorizar narrativa basada en datos reales y ranking confiable.
 
 ## Teams bot
 
-Canal potencial para recordatorios, mensajes o consultas rapidas. Se prefiere como
-complemento antes que bloquear calendarios corporativos.
+Canal potencial fuera de scope para esta version. Teams se mantiene como parte
+del contexto corporativo de identidad/comunicacion, pero no como bot o sistema de
+notificaciones activo.
 
 ## Identidad corporativa
 
@@ -144,8 +144,7 @@ horario de partido, marcador final, goles, tarjetas, standings o top scorers.
 ## Dato ambiguo
 
 Dato que requiere interpretacion o criterio de negocio, como seleccion sorpresa o
-seleccion decepcion. Puede recibir asistencia de IA, pero la resolucion final debe
-quedar validada por admin.
+seleccion decepcion. Estas categorias quedan fuera de alcance para esta version.
 
 ## Override admin
 
@@ -154,32 +153,30 @@ Debe ganar sobre la API externa y conservar suficiente contexto para auditoria.
 
 ## Normalizacion de ranking por grupo
 
-Propuesta para comparar areas o equipos internos con tamanos distintos sin usar
-solo suma bruta de puntos. Puede evaluarse con promedio por participante activo,
-top N o ponderacion por participacion.
-
-Estado: propuesta no aprobada por ADR-0010.
+Decision aceptada para comparar areas o equipos internos con tamanos distintos.
+La formula aprobada es promedio de puntos por participante activo.
 
 ## Log de puntos
 
 Registro que explica como un usuario gano puntos: prediccion, resultado,
 criterio de scoring, puntos obtenidos y momento de calculo.
 
-Estado: propuesta no aprobada por ADR-0010.
+Estado: aceptado por ADR-0010.
 
 ## Subvista personal
 
 Vista o seccion enfocada en el desempeno de un usuario, separada del ranking
 global. Podria contener log de puntos, rachas, aciertos y movimientos.
 
-Estado: propuesta no aprobada por ADR-0010.
+Estado: aceptado por ADR-0010.
 
 ## Recordatorio Teams
 
 Mensaje o aviso enviado mediante Teams para recordar partidos, cierres o
 predicciones pendientes.
 
-Estado: propuesta no aprobada por ADR-0011.
+Estado: fuera de scope por ADR-0011; controles relacionados deben quedar
+deshabilitados.
 
 ## Badge de seleccion favorita
 
@@ -194,32 +191,32 @@ Estado: pregunta abierta en propuestas por vista.
 Ejecucion de un proceso de ingestion que trae datos desde un proveedor externo,
 registra inicio, fin, estado, errores y volumen de datos procesado.
 
-Estado: propuesta no aprobada por ADR-0012.
+Estado: aceptado por ADR-0012.
 
 ## Provider entity
 
 Mapeo entre un identificador externo de proveedor y una entidad interna de la app,
 por ejemplo equipo, partido, jugador o competencia.
 
-Estado: propuesta no aprobada por ADR-0012.
+Estado: aceptado por ADR-0012.
 
 ## Raw provider payload
 
 Respuesta cruda de un proveedor externo guardada como JSON para auditoria,
 debugging o reconciliacion.
 
-Estado: propuesta no aprobada por ADR-0012.
+Estado: aceptado por ADR-0012.
 
 ## Score event
 
 Registro auditable de puntos ganados por un usuario, asociado a una regla,
 prediccion, partido o categoria.
 
-Estado: propuesta no aprobada por ADR-0012.
+Estado: aceptado por ADR-0012.
 
 ## Ranking snapshot
 
 Foto calculada del ranking en un momento especifico. Permite evitar recalcular
 todo en cada lectura y facilita comparar cambios de posicion.
 
-Estado: propuesta no aprobada por ADR-0012.
+Estado: aceptado por ADR-0012.

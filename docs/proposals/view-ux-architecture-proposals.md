@@ -1,48 +1,44 @@
-# Propuestas UX y Arquitectura por Vista
+# Decisiones UX y Arquitectura por Vista
 
 ## Estado
 
-Proposed / no aprobado.
+Accepted.
 
-Fuente: criterio tecnico del usuario.
-
-Este documento registra dudas y propuestas importantes por vista. No representa
-decisiones cerradas. Cuando una propuesta tenga impacto en scoring, ranking,
-integraciones o modelo de datos, debe evaluarse con ADR antes de implementarse.
+Fuente: ADR-0009, ADR-0010 y ADR-0011.
 
 ## Predicciones
 
-| Tema | Tipo | Propuesta | Estado |
+| Tema | Tipo | Decision | Estado |
 | --- | --- | --- | --- |
-| Orden de predicciones diarias | UX | Definir una forma mas granular de ordenar y priorizar predicciones diarias. Hoy se perciben juntas, sin orden ni prioridad clara. | Propuesta |
-| Protagonismo de predicciones generales | UX | Reducir el espacio visual de predicciones generales despues del setup inicial. No deberian ocupar mas de la mitad de la vista si ya estan bloqueadas y no se vuelven a tocar. | Propuesta |
-| Foco de scoring diario | Scoring | Refactorizar el sistema de puntos para que el peso de partidos diarios sea mayor. Varias reglas actuales son generales o dependen del final del torneo. | Propuesta |
-| Comunicacion de reglas | UX / scoring | La vista debe explicar mejor que puntos se ganan hoy, que puntos son de largo plazo y que predicciones ya no requieren accion. | Pregunta abierta |
+| Tabs de predicciones | UX | Separar la vista en `Predicciones del dia` como tab principal y `Predicciones generales` como tab secundario. | Accepted |
+| Orden de predicciones del dia | UX | Ordenar y priorizar por urgencia, estado y kickoff. | Accepted |
+| Protagonismo de predicciones generales | UX | Mantenerlas accesibles, pero secundarias despues del setup inicial. | Accepted |
+| Foco de scoring diario | Scoring | Aumentar formas simples de ganar puntos por partido. | Accepted |
+| Comunicacion de reglas | UX / scoring | Explicar puntos diarios, puntos globales y estado bloqueado/editable. | Accepted |
 
 ## Ranking
 
-| Tema | Tipo | Propuesta | Estado |
+| Tema | Tipo | Decision | Estado |
 | --- | --- | --- | --- |
-| Ranking por grupos normalizado | Arquitectura / scoring | No usar solo suma bruta si los grupos tienen tamanos distintos. Evaluar normalizacion para que un grupo grande no tenga ventaja automatica sobre uno pequeno. | Propuesta |
-| Formula de normalizacion | Pregunta abierta | Evaluar promedio por participante activo, promedio top N o ponderacion por participacion. No elegir formula hasta validar justicia y entendibilidad. | Pregunta abierta |
-| Log de puntos | UX / arquitectura | Crear una vista o subvista propia para mostrar como el usuario gano puntos y mover ahi la card de "tu desempeno". | Propuesta |
-| Separacion global/personal | UX | Separar ranking en dos subvistas: ranking global y desempeno personal. | Propuesta |
-| Tabla avanzada | UX | Agregar paginado, sort y filtros dentro de la tabla de ranking. Antecedente: solicitud de Alejandra; refuerzo: criterio tecnico del usuario. | Propuesta |
-| Boton recordar / Teams | Integracion | Conectar accion de recordar con un flujo de mensaje o aviso en Teams, si se aprueba el flujo de integracion. | Propuesta |
+| Ranking individual | UX / scoring | Mantener como vista principal de competencia individual. | Accepted |
+| Ranking por grupos normalizado | Arquitectura / scoring | Usar promedio de puntos por participante activo. | Accepted |
+| Ranking por grupos sin normalizacion | UX / scoring | Mostrar suma bruta de puntos como vista complementaria. | Accepted |
+| Log de puntos | UX / arquitectura | Crear vista o subvista personal para explicar puntos y aciertos. | Accepted |
+| Tabla avanzada | UX | Agregar filtros y sort dentro de la tabla de ranking. | Accepted |
+| Rankings por tipo de prediccion | UX | Eliminar rankings por prediccion semanal, general, preccion general o prediccion del dia. | Accepted |
 
 ## Home
 
-| Tema | Tipo | Propuesta | Estado |
+| Tema | Tipo | Decision | Estado |
 | --- | --- | --- | --- |
-| Recordar por Teams | Integracion / UX | Permitir que la opcion de recordar dispare un mensaje a grupo o canal de Teams mediante bot o Microsoft Graph. | Propuesta |
-| Badges de selecciones favoritas | UX / datos | Decidir si todos los badges usan un estilo estandar o si cada pais conserva un color principal propio. | Pregunta abierta |
-| Predicciones del dia desde Home | UX | Definir que Home no guarde predicciones como quick action. La accion deberia redirigir a la vista Predicciones para completar el flujo ahi. | Propuesta |
+| Predicciones del dia desde Home | UX | Home redirige a la vista Predicciones; no guarda predicciones como quick action. | Accepted |
+| Notificaciones / Teams | Integracion | Fuera de scope; controles relacionados quedan deshabilitados. | Accepted |
+| Badges de selecciones favoritas | UX / datos | Pendiente: estilo estandar o color principal por pais. | Pregunta abierta |
 
 ## Implicaciones tecnicas
 
-- Las propuestas de predicciones se relacionan con ADR-0009.
-- Las propuestas de ranking se relacionan con ADR-0010.
-- Las propuestas de Teams y recordatorios se relacionan con ADR-0011.
-- Ninguna propuesta debe implementarse como decision cerrada sin aprobacion
-  posterior.
-
+- Las decisiones de predicciones se relacionan con ADR-0009.
+- Las decisiones de ranking se relacionan con ADR-0010.
+- Las decisiones de Home/notificaciones se relacionan con ADR-0011.
+- Estas decisiones requieren actualizar el repo de aplicacion en una fase
+  posterior; este hub solo documenta el contexto aceptado.

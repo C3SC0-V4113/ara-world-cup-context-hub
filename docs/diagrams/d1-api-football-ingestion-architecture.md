@@ -1,10 +1,10 @@
-# Arquitectura D1 con Ingestion API-Football
+# Arquitectura D1 con Ingestion API-Football Free
 
-Estado: Proposed / no aprobado.
+Estado: Accepted.
 
-Esta propuesta asume login corporativo Microsoft como requisito transversal.
-API-Football queda como proveedor deportivo propuesto por costo y amplitud, pero
-no como decision aprobada.
+Esta arquitectura asume login corporativo Microsoft como requisito transversal.
+API-Football Free es el proveedor deportivo inicial; OpenFootball puede alimentar
+seed estatico. D1 es la fuente canonica interna.
 
 ```mermaid
 flowchart LR
@@ -19,20 +19,21 @@ flowchart LR
     direction TB
     appShell["App web en Cloudflare<br/>Next.js runtime compatible"]
     userViews["Vistas usuario<br/>home, predicciones, ranking"]
+    freshnessUi["Frescura visible<br/>actualizado hace X"]
     adminUi["Admin UI<br/>conflictos y overrides"]
   end
 
   subgraph externalApiSection["APIs externas"]
     direction TB
-    openFootballSeed["OpenFootball<br/>seed gratuito"]
-    apiFootballProvider["API-Football<br/>fixtures, live, events,<br/>statistics, top scorers"]
-    quotaAlerts["Alertas de cuota<br/>dashboard y umbrales"]
+    openFootballSeed["OpenFootball<br/>seed gratuito opcional"]
+    apiFootballProvider["API-Football Free<br/>100 requests/dia"]
+    quotaGuard["Control de cuota<br/>80 sync + 20 reserva"]
   end
 
   subgraph ingestionSection["Ingestion y normalizacion"]
     direction TB
     initialImport["Import inicial<br/>teams y matches"]
-    syncWorker["Sync worker / polling<br/>retries y backoff"]
+    syncWorker["Sync worker / polling<br/>cada 60 min en ventana"]
     providerMappings["Provider mappings<br/>IDs externos -> internos"]
     rawPayloads["Payloads y sync runs<br/>trazabilidad y debug"]
     normalizeData["Normalizacion<br/>eventos, standings, estadisticas"]
@@ -43,7 +44,7 @@ flowchart LR
     appServices["Servicios app<br/>predicciones y consulta"]
     roleGuard["Proteccion por rol<br/>acciones admin en servidor"]
     scoringEngine["Scoring engine<br/>score events"]
-    rankingEngine["Ranking engine<br/>snapshots"]
+    rankingEngine["Ranking engine<br/>individual y grupos"]
   end
 
   subgraph databaseSection["Base de datos"]
@@ -52,7 +53,7 @@ flowchart LR
     providerConflicts["Provider conflicts<br/>API vs D1/admin"]
     adminOverrides["Admin overrides<br/>correcciones manuales"]
     scoreEvents["Score events<br/>ledger auditable"]
-    rankingSnapshots["Ranking snapshots<br/>individual y grupo"]
+    rankingSnapshots["Ranking snapshots<br/>individual y grupos"]
     auditLog["Audit log<br/>syncs, overrides y recalculos"]
   end
 
@@ -69,12 +70,13 @@ flowchart LR
   appShell --> userViews
   appShell --> adminUi
   userViews --> appServices
+  appServices --> freshnessUi
   adminUi --> roleGuard
   roleGuard --> adminOverrides
   roleGuard --> auditLog
   openFootballSeed --> initialImport
   apiFootballProvider --> syncWorker
-  quotaAlerts --> syncWorker
+  quotaGuard --> syncWorker
   initialImport --> providerMappings
   syncWorker --> rawPayloads
   syncWorker --> providerMappings
@@ -105,31 +107,27 @@ flowchart LR
   classDef adminCls fill:#fff0e6,stroke:#d79b00,color:#111827
 
   class msEntra,msGraphProfile,avatarFallback identityCls
-  class appShell,userViews,adminUi frontendCls
-  class openFootballSeed,apiFootballProvider,quotaAlerts apiCls
+  class appShell,userViews,freshnessUi,adminUi frontendCls
+  class openFootballSeed,apiFootballProvider,quotaGuard apiCls
   class initialImport,syncWorker,providerMappings,rawPayloads,normalizeData,appServices,roleGuard,scoringEngine,rankingEngine serviceCls
   class d1Store,scoreEvents,rankingSnapshots storeCls
   class providerConflicts,adminOverrides,auditLog adminCls
 ```
 
-## Costos estimados
+## Costos y limites estimados
 
-Fecha de verificacion: 2026-06-04. Estos costos son referencia documental para
-comparar opciones; no aprueban proveedor ni plan final.
+Fecha de verificacion documental: 2026-06-04. Estos costos son referencia; los
+planes pueden cambiar.
 
-| Recurso | Uso en esta propuesta | Costo base | Variable de consumo | Riesgo de costo |
+| Recurso | Uso | Costo base | Variable de consumo | Riesgo |
 | --- | --- | --- | --- | --- |
-| Cloudflare Workers / Pages | Hosting de app, servicios y workers de ingestion. | Workers Paid referencia: USD 5/mes; assets estaticos sin cobro por request segun Workers pricing. | Requests dinamicos, cron/polling y CPU. | Medio por polling durante partidos y procesamiento de payloads. |
-| Cloudflare D1 | Fuente canonica, cache normalizado, payloads, sync runs, conflicts y ranking. | Free: 5M rows read/dia, 100K rows written/dia, 5GB total. Paid: primeros 25B reads/mes, 50M writes/mes y 5GB incluidos. | Excedentes Paid: USD 0.001/M reads, USD 1.00/M writes, USD 0.75/GB-mes. | Medio si se guardan payloads crudos sin retencion o hay polling alto. |
-| Microsoft Entra ID / Graph | Login corporativo, perfil, correo y avatar. | Depende del licenciamiento Microsoft 365 existente. | Llamadas Graph para perfil/foto y permisos del tenant. | Bajo; validar scopes, consentimiento y fallback de foto. |
-| Microsoft Graph / Teams | Recordatorios o anuncios si se integran. | Microsoft indica que desde 2025-08-25 las APIs de Teams ya no son metered. | Otras APIs Graph metered ajenas a Teams pueden requerir Azure subscription. | Bajo para Teams basico; medio si se agregan APIs Graph protegidas. |
-| API-Football | Fixtures, live, events, statistics, standings y top scorers. | Free USD 0/mes con 100 requests/dia; Pro USD 19/mes con 7,500 requests/dia; Ultra USD 29/mes con 75,000 requests/dia; Mega USD 39/mes con 150,000 requests/dia. | Requests/dia, frecuencia de polling y cantidad de endpoints por partido. | Medio-alto; si se agota cuota, la API detiene procesamiento y devuelve error. |
-| OpenFootball | Seed inicial gratuito de datos estaticos. | USD 0. | Sin live API ni estadisticas en tiempo real. | Bajo; requiere mapeo contra IDs internos/API-Football. |
-| LLM asistivo | No obligatorio en esta propuesta; podria usarse para narrativa o categorias ambiguas. | Proveedor no aprobado. OpenAI solo como referencia por 1M tokens. | Tokens de entrada/salida si se habilita. | Bajo si se deja fuera del flujo operativo; medio si se usa para narrativa frecuente. |
-| Wrangler | Configuracion, migraciones, bindings y deploy. | Sin costo directo como CLI. | Depende de recursos Cloudflare operados. | Bajo; riesgo operativo si sync y bindings no quedan versionados. |
+| Cloudflare Workers / Pages | Hosting, servicios y sync workers. | Workers Paid referencia: USD 5/mes. | Requests dinamicos, cron/polling y CPU. | Medio si sync o recalculos son frecuentes. |
+| Cloudflare D1 | Fuente canonica, cache normalizado, sync runs, conflicts y ranking. | Free: 5M reads/dia, 100K writes/dia, 5GB total. | Reads/writes y storage de payloads. | Medio si payloads no tienen retencion. |
+| API-Football Free | Fixtures, resultados, eventos, estadisticas y standings disponibles. | USD 0/mes. | 100 requests/dia. | Alto si polling excede cuota o falta cobertura. |
+| OpenFootball | Seed inicial gratuito. | USD 0. | Sin live API. | Bajo; requiere mapeo contra IDs internos/API-Football. |
+| Microsoft Graph | Login corporativo, perfil, correo y avatar. | Depende del licenciamiento Microsoft 365 existente. | Llamadas Graph para perfil/foto. | Bajo; validar scopes y fallback de foto. |
 
 Fuentes: [Cloudflare D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/),
 [Cloudflare Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/),
-[API-Football pricing](https://www.api-football.com/pricing),
-[Microsoft Graph metered APIs](https://learn.microsoft.com/en-us/graph/metered-api-list) y
-[OpenAI API pricing](https://developers.openai.com/api/docs/pricing).
+[API-Football pricing](https://www.api-football.com/pricing) y
+[Microsoft Graph metered APIs](https://learn.microsoft.com/en-us/graph/metered-api-list).

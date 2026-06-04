@@ -6,20 +6,25 @@ Accepted
 
 ## Context
 
-La plataforma necesita calcular puntos por reglas objetivas y resolver categorias
-subjetivas como seleccion sorpresa, seleccion decepcion y mejor defensa.
+La plataforma necesita calcular puntos por reglas objetivas y permitir
+correcciones admin antes de impactar ranking.
 
-Walter advierte que estas categorias pueden depender de criterio, que una IA puede
-alucinar y que conviene tener un panel administrativo o mecanismo de correccion
-manual.
+Walter advierte que algunas categorias pueden depender de criterio y que conviene
+tener un panel administrativo o mecanismo de correccion manual.
 
 ## Decision
 
 Scoring, resultados y resolucion de categorias subjetivas deben poder
 administrarse o corregirse manualmente.
 
-La IA o informacion de internet puede usarse como asistencia, pero no sera fuente
-autonoma final para cerrar resultados de scoring.
+La informacion verificable externa puede usarse como asistencia, pero no sera
+fuente autonoma final para cerrar resultados de scoring sin persistencia,
+normalizacion y posibilidad de override admin.
+
+Nota posterior: ADR-0008 y ADR-0009 restringen esta posibilidad para la version
+actual. No se usaran LLMs y las categorias seleccion sorpresa y seleccion
+decepcion quedan fuera de alcance. El control admin se conserva para overrides,
+correcciones, cierres y recalculos sobre datos objetivos.
 
 ## Considered Options
 
@@ -28,12 +33,12 @@ autonoma final para cerrar resultados de scoring.
 - Pros: control total y menor riesgo de alucinacion.
 - Cons: carga operativa alta y posible sesgo de quien administra.
 
-### Resolver todo con IA o APIs externas
+### Resolver todo con automatizacion externa
 
 - Pros: menos trabajo manual y potencial automatizacion.
 - Cons: riesgo de datos incorrectos, alucinaciones y controversia.
 
-### Asistencia automatizada con control admin
+### Datos externos con control admin
 
 - Pros: balancea eficiencia y control.
 - Cons: requiere disenar flujo de revision y auditoria.
@@ -43,7 +48,7 @@ autonoma final para cerrar resultados de scoring.
 ### Positive
 
 - El juego puede corregir errores antes de impactar ranking.
-- Las categorias subjetivas tienen una autoridad final clara.
+- Los overrides y correcciones tienen una autoridad final clara.
 - El sistema puede operar incluso si una API externa falla.
 
 ### Negative
@@ -55,5 +60,6 @@ autonoma final para cerrar resultados de scoring.
 
 - Alejandra expresa que no quiere depender de que una persona vea todos los
   partidos para decidir categorias.
-- Walter propone IA/internet como apoyo, pero enfatiza administrabilidad y riesgo
-  de alucinacion.
+- Walter propuso IA/internet como apoyo en la conversacion original, pero enfatizo
+  administrabilidad y riesgo de alucinacion. ADR-0008 y ADR-0009 dejan LLMs fuera
+  de alcance para la version actual.

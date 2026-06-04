@@ -1,36 +1,42 @@
-# ADR-0010: Proponer ranking grupal normalizado y vista de desempeno personal
+# ADR-0010: Usar ranking individual y rankings grupales normalizados
 
 ## Estado
 
-Proposed
+Accepted
 
 ## Contexto
 
 El producto contempla ranking individual y ranking por area o equipo interno. Si
-los grupos tienen tamanos diferentes, una suma bruta de puntos puede favorecer a
-grupos grandes. Por ejemplo, un grupo de devs con mas de 20 personas podria
-superar a un grupo de producto con 10 personas solo por volumen.
+los grupos tienen tamanos diferentes, una suma bruta de puntos favorece a grupos
+grandes. Al mismo tiempo, el equipo quiere conservar una vista sin normalizacion
+porque muestra volumen total de participacion y puntos acumulados.
 
-Tambien existe una necesidad de explicar como cada usuario gano puntos. Esa
-informacion puede crecer lo suficiente como para merecer una vista propia, en vez
-de quedar comprimida en una card dentro del ranking global.
+Tambien se decidio eliminar rankings por prediccion semanal, prediccion general,
+preccion general y prediccion del dia. El ranking se centrara en individual y
+grupos.
 
 ## Decision
 
-Se propone que el ranking por grupos no dependa solo de suma bruta cuando los
-grupos tengan tamanos distintos.
+El ranking tendra tres formas principales:
 
-Opciones de normalizacion a evaluar:
+- **Ranking individual**.
+- **Ranking por grupos normalizado** por promedio de participantes activos.
+- **Ranking por grupos sin normalizacion** por suma bruta de puntos.
 
-- promedio por participante activo;
-- promedio top N por grupo;
-- ponderacion por participacion;
-- suma bruta visible solo como dato secundario.
+La tabla de ranking debe incluir filtros y sort. El top 3 puede seguir existiendo
+como elemento de gamificacion, pero no reemplaza la tabla completa.
 
-Tambien se propone separar Ranking en dos subvistas:
+La normalizacion aprobada para grupos es:
 
-- ranking global, con tabla, top 3, filtros, sort y paginado;
-- desempeno personal, con log de puntos, desglose de aciertos y movimientos.
+```text
+puntos_normalizados = puntos_totales_del_grupo / participantes_activos_del_grupo
+```
+
+Un participante activo es un usuario del grupo que ha enviado al menos una
+prediccion valida o ha recibido al menos un `score_event` durante el torneo.
+
+La vista de desempeno personal debe existir como vista o subvista enfocada en log
+de puntos, desglose de aciertos y movimientos del usuario.
 
 ## Alternativas consideradas
 
@@ -39,41 +45,44 @@ Tambien se propone separar Ranking en dos subvistas:
 - Ventajas: facil de explicar y calcular.
 - Desventajas: favorece grupos grandes y puede percibirse injusta.
 
-### Promedio simple
+### Promedio por participante activo
 
-- Ventajas: corrige diferencia de tamano.
-- Desventajas: puede favorecer grupos pequenos con pocos participantes activos.
+- Ventajas: corrige diferencia de tamano y mantiene una formula entendible.
+- Desventajas: puede favorecer grupos pequenos si tienen pocos participantes muy
+  activos.
 
 ### Top N por grupo
 
 - Ventajas: compara grupos con una muestra equivalente.
-- Desventajas: puede excluir contribuciones de participantes fuera del top N.
+- Desventajas: excluye contribuciones de participantes fuera del top N.
 
-### Subvista personal separada
+### Ponderacion por participacion
 
-- Ventajas: permite explicar puntos sin saturar ranking global.
-- Desventajas: agrega navegacion y requiere modelo auditable de eventos de
-  scoring.
+- Ventajas: puede balancear justicia y volumen.
+- Desventajas: es mas dificil de explicar.
 
 ## Consecuencias
 
 ### Positivas
 
 - El ranking grupal puede percibirse mas justo.
-- El ranking global puede enfocarse en comparacion y tabla.
-- El desempeno personal puede mostrar trazabilidad de puntos con mas claridad.
+- La suma bruta sigue disponible para mostrar volumen total.
+- La tabla de ranking se centra en comparacion, filtros y sort.
+- El desempeno personal permite explicar puntos sin saturar ranking global.
 
 ### Negativas
 
-- La formula de normalizacion debe definirse y explicarse cuidadosamente.
-- Se necesita registrar eventos o desglose de scoring de forma auditable.
-- Paginado, sort y filtros agregan complejidad de UI y consulta.
+- El sistema debe calcular y guardar participantes activos por grupo.
+- Grupos muy pequenos pueden destacar por promedio; la vista sin normalizacion
+  ayuda a contextualizarlo.
+- Filtros, sort y snapshots agregan complejidad de UI y consulta.
 
-## Fuente de la decision/propuesta
+## Fuente de la decision
 
-- Criterio tecnico del usuario.
+- Decision posterior del usuario: usar normalizacion por promedio activo,
+  conservar ranking grupal sin normalizacion, eliminar rankings por tipo de
+  prediccion y enfocar ranking en individual/grupos.
 - Antecedente de producto: Alejandra solicito capacidades de tabla como paginado,
   sort y filtros para ranking.
 - Contexto previo: ranking por area/equipo interno aparece como requerimiento de
   producto.
-

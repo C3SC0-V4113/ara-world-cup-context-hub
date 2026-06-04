@@ -21,6 +21,9 @@ calendario avanzado, recordatorios o integraciones de agenda.
 Recordatorios y Teams bot quedan como complementos posteriores, no como requisito
 central inicial.
 
+Nota posterior: ADR-0011 deja notificaciones, recordatorios y Teams bot fuera de
+scope para la version actual. Si se reactivan, requeriran una decision posterior.
+
 ## Considered Options
 
 ### Integrar calendario y recordatorios desde el inicio
@@ -45,7 +48,8 @@ central inicial.
 ### Negative
 
 - Algunas ideas de engagement por calendario quedan pendientes.
-- Teams bot necesitara una decision tecnica posterior si se implementa.
+- Teams bot queda fuera de scope por ADR-0011; necesitara una decision tecnica
+  posterior si se implementa.
 
 ## Decision Source
 

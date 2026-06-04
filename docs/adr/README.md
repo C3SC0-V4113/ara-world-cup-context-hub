@@ -21,11 +21,11 @@ Cup.
 | [0005](0005-prioritize-gamification-ranking-before-calendar-reminders.md) | Priorizar gamificacion y ranking antes de recordatorios | Accepted |
 | [0006](0006-use-cloudflare-d1-and-cloudflare-deployment.md) | Usar Cloudflare D1 y despliegue primario en Cloudflare | Accepted |
 | [0007](0007-use-corporate-microsoft-identity-and-role-based-access.md) | Usar identidad corporativa Microsoft y acceso por roles | Accepted |
-| [0008](0008-prefer-traditional-apis-for-verifiable-football-data.md) | Preferir APIs tradicionales para datos verificables de futbol | Proposed |
-| [0009](0009-propose-rebalancing-predictions-ux-and-daily-scoring.md) | Proponer rebalance de UX de predicciones y scoring diario | Proposed |
-| [0010](0010-propose-normalized-group-ranking-and-personal-performance-view.md) | Proponer ranking grupal normalizado y vista de desempeno personal | Proposed |
-| [0011](0011-propose-teams-reminders-and-home-reminder-flow.md) | Proponer recordatorios por Teams y flujo desde Home | Proposed |
-| [0012](0012-propose-d1-schema-options-for-manual-and-api-ingestion.md) | Proponer opciones de schema D1 para ingesta manual y API-Football | Proposed |
+| [0008](0008-prefer-traditional-apis-for-verifiable-football-data.md) | Usar APIs tradicionales para datos verificables de futbol | Accepted |
+| [0009](0009-propose-rebalancing-predictions-ux-and-daily-scoring.md) | Rebalancear UX de predicciones y scoring diario | Accepted |
+| [0010](0010-propose-normalized-group-ranking-and-personal-performance-view.md) | Usar ranking individual y rankings grupales normalizados | Accepted |
+| [0011](0011-propose-teams-reminders-and-home-reminder-flow.md) | Redirigir predicciones desde Home y dejar notificaciones fuera de scope | Accepted |
+| [0012](0012-propose-d1-schema-options-for-manual-and-api-ingestion.md) | Usar schema D1 para ingestion API-Football Free | Accepted |
 
 ## Criterio de uso
 

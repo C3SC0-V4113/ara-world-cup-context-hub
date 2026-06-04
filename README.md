@@ -28,10 +28,10 @@ operada con **Wrangler**. El despliegue primario de la app web debe ser
 La identidad objetivo usa cuentas corporativas Microsoft/Windows usadas en Teams,
 con roles base `user` y `admin`.
 
-Propuesta en evaluacion: para datos objetivos de futbol, se investiga preferir
-APIs tradicionales o datasets verificables, cachearlos en D1 y reservar IA para
-categorias ambiguas o narrativa con validacion admin. Esta propuesta aun no esta
-aprobada.
+Decision vigente: para datos objetivos de futbol se usara API-Football Free con
+seed opcional de OpenFootball, cache/fuente interna en D1 y overrides admin. No
+se usaran LLMs en esta version; categorias ambiguas como seleccion sorpresa y
+seleccion decepcion quedan fuera de alcance.
 
 ## Jerarquia de fuentes
 
@@ -54,10 +54,10 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Reglas de puntuacion](docs/rules/scoring-rules.md)
 - [Reglas de bloqueo](docs/rules/prediction-locking.md)
 - [Plataforma y base de datos](docs/architecture/platform-and-database.md)
-- [Propuesta de opciones de schema D1](docs/architecture/d1-schema-options.md)
+- [Schema D1 para Ara World Cup](docs/architecture/d1-schema-options.md)
 - [Identidad y acceso](docs/architecture/identity-and-access.md)
-- [Propuesta de APIs tradicionales y fuentes de datos](docs/integrations/football-data-apis.md)
-- [Summary CTO de propuesta de arquitectura](docs/proposals/cto-architecture-summary.md)
+- [APIs tradicionales y fuentes de datos](docs/integrations/football-data-apis.md)
+- [Summary CTO de decisiones de arquitectura](docs/proposals/cto-architecture-summary.md)
 - [Propuestas UX y arquitectura por vista](docs/proposals/view-ux-architecture-proposals.md)
 - [Mapa del repo de aplicacion](docs/app-repo-map.md)
 - [Architecture Decision Records](docs/adr/README.md)
@@ -68,9 +68,9 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Flujo de scoring y ranking](docs/diagrams/scoring-ranking-flow.md)
 - [Modelo conceptual de datos](docs/diagrams/conceptual-data-model.md)
 - [Navegacion Home, Ranking y Gamificacion](docs/diagrams/home-ranking-navigation.md)
-- [Propuesta de ingestion de datos externos](docs/diagrams/external-data-ingestion.md)
-- [Propuesta D1 con ingesta manual](docs/diagrams/d1-manual-ingestion-architecture.md)
-- [Propuesta D1 con API-Football](docs/diagrams/d1-api-football-ingestion-architecture.md)
+- [Ingestion de datos externos](docs/diagrams/external-data-ingestion.md)
+- [Fallback D1 con ingesta manual](docs/diagrams/d1-manual-ingestion-architecture.md)
+- [Arquitectura D1 con API-Football Free](docs/diagrams/d1-api-football-ingestion-architecture.md)
 
 Los diagramas estan en Mermaid para que puedan mantenerse como texto versionado.
 

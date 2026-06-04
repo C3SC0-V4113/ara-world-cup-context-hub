@@ -2,22 +2,25 @@
 
 ```mermaid
 flowchart TD
-  H["Home"] --> P["Predicciones"]
+  H["Home<br/>resumen y redireccion"] --> P["Predicciones"]
   H --> R["Ranking"]
-  H --> C["Calendario"]
+  H --> C["Calendario / partidos"]
   H --> F["Mis selecciones favoritas"]
-  H --> B["Teams bot"]
+  H --> N["Notificaciones<br/>deshabilitadas"]
 
-  P --> PG["Predicciones generales"]
-  P --> PD["Predicciones del dia"]
-  R --> RI["Ranking individual completo"]
-  R --> RA["Ranking por area"]
+  P --> PD["Tab principal<br/>Predicciones del dia"]
+  P --> PG["Tab secundario<br/>Predicciones generales"]
+
+  R --> RI["Ranking individual"]
+  R --> RGN["Ranking grupos<br/>normalizado"]
+  R --> RGB["Ranking grupos<br/>sin normalizacion"]
+  R --> DP["Desempeno personal<br/>log de puntos"]
   R --> T3["Top 3 destacado"]
   R --> M["Movimientos recientes"]
+  R --> FS["Filtros y sort"]
 
   F --> H
-  PG --> R
   PD --> R
-  B --> H
+  PG --> R
   C --> H
 ```

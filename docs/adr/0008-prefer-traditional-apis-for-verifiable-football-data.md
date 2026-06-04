@@ -1,50 +1,56 @@
-# ADR-0008: Preferir APIs tradicionales para datos verificables de futbol
+# ADR-0008: Usar APIs tradicionales para datos verificables de futbol
 
 ## Estado
 
-Proposed
+Accepted
 
 ## Contexto
 
 Ara World Cup necesita datos de futbol para catalogos, calendario, horarios,
 resultados, standings, eventos de partido, estadisticas y categorias de scoring.
-Hasta ahora el enfoque de implementacion se ha guiado por cargar y actualizar
-valores internamente desde la vista admin, mientras que algunos datos ambiguos se
-habian propuesto como candidatos a resolucion asistida por IA.
+El enfoque manual/admin reduce dependencia externa, pero eleva carga operativa
+durante el Mundial y aumenta riesgo de errores o retrasos al cerrar puntos.
 
-Esa estrategia es insuficiente para datos objetivos porque eleva el esfuerzo
-manual, aumenta riesgo de error y puede hacer que la IA opere como fuente final
-para hechos verificables. La decision vigente de plataforma indica que
-Cloudflare D1 es la fuente canonica interna, por lo que cualquier dato externo
-debe normalizarse e importarse o cachearse antes de alimentar UI, scoring o
-ranking.
+La decision vigente de plataforma indica que **Cloudflare D1** es la fuente
+canonica interna. Por eso los datos externos no deben alimentar scoring, ranking
+o UI directamente desde el frontend. Deben importarse, normalizarse o cachearse
+en D1 antes de usarse en la app.
+
+Tambien se decidio no usar LLMs para esta version. Las categorias ambiguas como
+seleccion sorpresa y seleccion decepcion quedan fuera de alcance.
 
 ## Decision
 
-Se propone usar APIs tradicionales y datasets verificables como fuente preferida
-para datos objetivos del Mundial:
+Usar APIs tradicionales y datasets verificables como fuente preferida para datos
+objetivos del Mundial.
+
+La arquitectura aprobada es:
+
+- **API-Football Free** como proveedor deportivo inicial, con limite de 100
+  requests/dia.
+- **OpenFootball** como seed inicial opcional para datos estaticos cuando sea
+  util.
+- **Cloudflare D1** como fuente canonica interna para UI, scoring, ranking,
+  overrides y auditoria.
+- Frontend hablando frecuentemente con el backend, pero nunca llamando directo a
+  API-Football.
+- Backend sincronizando periodicamente con API-Football en intervalos
+  conservadores para no exceder el limite free.
+- Vistas que muestren datos importados deben exponer frescura con `synced_at`,
+  "actualizado hace X" o badge equivalente.
+- Admin puede corregir datos importados; el override admin gana sobre el dato de
+  proveedor y debe quedar auditable.
+
+Datos objetivos cubiertos por esta decision:
 
 - catalogo de selecciones, grupos, sedes y banderas;
 - fixtures, proximos partidos, kickoff y horarios;
-- resultados, estado del partido y live scores;
-- standings, grupos y brackets;
-- eventos como goles, tarjetas, cambios y penales;
-- estadisticas como tiros, corners, posesion, faltas y xG si el proveedor lo
-  ofrece;
-- top scorers, seleccion con mas goles y mejor defensa cuando pueda derivarse de
-  datos objetivos.
-
-Si esta propuesta se aprueba, los datos externos se deberian guardar o cachear en
-**Cloudflare D1** antes de ser usados por vistas, scoring o ranking. La app no
-deberia depender de llamadas directas desde UI a proveedores externos para
-decisiones de puntuacion.
-
-La vista admin deberia poder corregir datos importados. Las correcciones admin
-ganarian sobre la API externa y deberian quedar auditables.
-
-La IA quedaria limitada a asistencia para categorias ambiguas, narrativa o
-explicacion, usando datos normalizados como evidencia. La IA no deberia escribir
-resultados finales de scoring ni resolver datos objetivos sin validacion admin.
+- resultados, estado del partido y live scores si el limite free lo permite;
+- standings, grupos y clasificados;
+- eventos simples como goles, tarjetas, penales y otros datos disponibles;
+- estadisticas simples como tiros al arco si el proveedor las entrega;
+- seleccion con mas goles y mejor defensa cuando puedan derivarse de datos
+  objetivos.
 
 ## Alternativas consideradas
 
@@ -54,56 +60,57 @@ resultados finales de scoring ni resolver datos objetivos sin validacion admin.
 - Desventajas: mucho trabajo operativo durante el Mundial, riesgo de errores y
   retraso en resultados o rankings.
 
-### IA como fuente primaria
+### LLMs o IA como fuente primaria
 
-- Ventajas: flexible para categorias subjetivas y texto narrativo.
-- Desventajas: puede alucinar, mezclar fuentes, no garantiza consistencia y no
-  es apropiada para hechos verificables que afectan puntos.
+- Ventajas: flexibilidad para narrativa y categorias subjetivas.
+- Desventajas: puede alucinar, mezclar fuentes y no garantiza consistencia para
+  hechos verificables. Se rechazo para esta version.
 
 ### APIs tradicionales + D1 + override admin
 
-- Ventajas: reduce trabajo manual, mejora trazabilidad, permite cache local,
-  mantiene control admin y limita IA a casos adecuados.
-- Desventajas: requiere elegir proveedor, manejar cuotas, normalizar respuestas,
-  crear jobs de ingestion y monitorear cambios de API.
+- Ventajas: reduce trabajo manual, mejora trazabilidad, permite cache local y
+  mantiene control admin.
+- Desventajas: requiere controlar cuotas, normalizar respuestas, mapear IDs
+  externos y monitorear errores de sync.
 
 ## Consecuencias
 
 ### Positivas
 
 - Scoring y ranking se basan en datos objetivos y trazables.
-- D1 conserva una copia canonica que desacopla la app de caidas o cambios de
-  proveedores externos.
-- Admin puede corregir errores sin esperar al proveedor.
-- La IA se usa donde aporta valor: categorias ambiguas y narrativa.
+- D1 desacopla la app de caidas o cambios de proveedor.
+- El frontend puede consultar backend con frecuencia sin quemar cuota externa.
+- Admin conserva control final mediante overrides auditables.
+- Se elimina ambiguedad operativa al dejar fuera de alcance LLMs, sorpresa y
+  decepcion.
 
 ### Negativas
 
-- Se debe implementar una capa de ingestion/sync.
-- Hay costo potencial si se requieren livescores, eventos o estadisticas ricas.
-- Se deben vigilar limites de rate, calidad de cobertura y cambios de contrato.
+- La version free de API-Football exige una estrategia estricta de bajo polling.
+- Algunas metricas o eventos pueden no estar disponibles con suficiente
+  cobertura.
 - Los IDs externos de equipos, partidos y competiciones deben mapearse contra el
   modelo interno.
+- Se necesitan `sync_runs`, frescura visible y manejo de errores para explicar
+  datos desactualizados.
 
 ## Notas de implementacion
 
-- Usar OpenFootball para seed estatico gratuito cuando aplique.
-- Evaluar `football-data.org` como baseline barato para fixtures, schedules,
-  standings y live scores.
-- Evaluar `API-Football` si se requieren eventos, estadisticas, lineups, top
-  scorers o endpoints mas amplios a bajo costo.
-- Evaluar Sportmonks si el presupuesto justifica datos mas profundos y robustos.
-- No priorizar WorldCupAPI salvo que su especializacion compense el costo.
-- Registrar proveedor, timestamp de sincronizacion, payload relevante o checksum,
-  y cualquier override admin.
+- Reservar margen de cuota: maximo recomendado de 80 requests automaticas/dia y
+  20 requests para admin, pruebas o recuperacion manual.
+- Usar polling conservador: por defecto cada 60 minutos en ventanas de partido y
+  reconciliacion post-partido.
+- Guardar `source_provider`, `source_id`, `synced_at` y estado de confianza en
+  registros importados.
+- Evitar que scoring lea payloads crudos; scoring debe leer modelos internos ya
+  normalizados.
+- Mostrar frescura en componentes que dependan de datos importados.
 
-## Fuente de la decision/propuesta
+## Fuente de la decision
 
-- Requerimiento nuevo del usuario: buscar soluciones con APIs tradicionales
-  siempre que los datos sean verificables. El usuario aclaro posteriormente que
-  esta peticion aun no esta aprobada y debe tratarse como propuesta.
+- Decision posterior del usuario: aprobar la propuesta de APIs externas usando
+  API-Football Free, mantener OpenFootball como seed opcional, no usar LLMs y
+  conservar D1 como fuente canonica local.
 - ADR-0004: scoring y resoluciones deben poder administrarse o corregirse
   manualmente.
 - ADR-0006: Cloudflare D1 es la base de datos objetivo y fuente canonica interna.
-- Criterio tecnico del hub: evitar depender exclusivamente de IA para datos
-  objetivos que impactan scoring y ranking.
