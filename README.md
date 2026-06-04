@@ -57,6 +57,7 @@ decisiones tecnicas, riesgos y priorizacion.
 - [Propuesta de opciones de schema D1](docs/architecture/d1-schema-options.md)
 - [Identidad y acceso](docs/architecture/identity-and-access.md)
 - [Propuesta de APIs tradicionales y fuentes de datos](docs/integrations/football-data-apis.md)
+- [Summary CTO de propuesta de arquitectura](docs/proposals/cto-architecture-summary.md)
 - [Propuestas UX y arquitectura por vista](docs/proposals/view-ux-architecture-proposals.md)
 - [Mapa del repo de aplicacion](docs/app-repo-map.md)
 - [Architecture Decision Records](docs/adr/README.md)
